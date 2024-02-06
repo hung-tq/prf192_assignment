@@ -75,6 +75,17 @@ int main() {
             }
             case 4: {
                 display_all_items();
+                int choice_4;
+                printf("\n                          1.     Name     ");
+                printf("\n                          2.     Quantity     ");
+                printf("\n                          3.     Price     ");
+                printf("\n                          4.     Manufactoring Date     ");
+                printf("\n                          5.     Expiry Date     ");
+                printf("\n");
+                printf("\n                          Which field do you want to search:     ");
+                scanf("%d", &choice_4);
+
+                search_by_field(choice_4);
 
             }
             case 9:
@@ -210,4 +221,16 @@ void sort_by_field(int choice_3) {
         }            
     }
     printf("\n                          Sort by %s completed!", catalogue[choice_3]);
+}
+
+void search_by_field(int choice_4) {
+    char search_word[MAX];
+    printf("Enter a name or a number to search:    ");
+    scanf("%s", search_word);
+    int int_search = atoi(search_word);
+    for (int i = 0; i <= items; i++) {
+        switch (expression) {
+        
+        }
+    }
 }

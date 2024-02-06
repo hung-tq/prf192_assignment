@@ -11,8 +11,9 @@ int main_menu_choice();
 void display_all_items(); // Display all items in the inventory
 void add_an_item();
 int is_duplicate();
-void sort_by_field(int choice_3);
-void swap_sort(int i, int j);
+void sort_by_field(int);
+void swap_sort(int, int);
+void search_by_field(int);
 
 #endif
 
