@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "main.h"
@@ -28,11 +29,11 @@ int main() {
                 char choice_1;
                 display_all_items(item_no, item_name, item_quantity, item_price, item_manufactoring_date, item_expiry_date, items);
                 scanf("%s", &choice_1);
-                // if (choice_1 == 'q') {
-                //     break;
-                // }
+                printf("\n                          Enter any keys to return to main menu:     ");
             }
             case 2: {
+                display_all_items(item_no, item_name, item_quantity, item_price, item_manufactoring_date, item_expiry_date, items);
+                add_an_item(item_no, item_name, item_quantity, item_price, item_manufactoring_date, item_expiry_date, items);
                 
             }
             case 9:
@@ -96,11 +97,41 @@ void display_all_items(int item_no[], char* item_name[], int item_quantity[], in
     printf("*   No.  |   Name           |  Quantity  |   Price   |   Manufactoring Date   |   Expiry Date    *\n");
     printf("*                                                                                                *\n");
     for (int i = 0; i < items; i++) {
-    printf("*   %-1d    |   %-10s     |   %-1d        |   %-2d    |   %s           |   %s     *\n", item_no[i], item_name[i], item_quantity[i], item_price[i], item_manufactoring_date[i], item_expiry_date[i]);
+        printf("*   %-1d    |   %-10s     |   %-1d        |   %-2d    |   %s           |   %s     *\n", item_no[i], item_name[i], item_quantity[i], item_price[i], item_manufactoring_date[i], item_expiry_date[i]);
     }
     printf("*                                                                                                *\n");
     printf("**************************************************************************************************\n");
-    printf("\n                          Enter any keys to return to main menu:     ");
+}
+
+void add_an_item(int item_no[], char* item_name[], int item_quantity[], int item_price[], char* item_manufactoring_date[], char* item_expiry_date[], int items) {
+    printf("Enter an item name: ");
+    items++;
+    scanf("%s", item_name[items]);
+    // if (is_duplicate(item_name, items, item_name[items])) {
+    //     printf("1");
+    // } else {
+    //     printf("0");
+    // }
+    printf("0");
+    
+}
+
+// char* lowercase(char str[]) {
+//     int lower_str[MAX];
+//     for (int i = 0; str[i]; i++) {
+//         lower_str[i] = tolower(str[i]);
+//     }
+//     return lower_str[];
+// }
+
+int is_duplicate(char* item_name[], int items, char* name) {
+    for (int i = 0; i < items; i++) {
+        if (strcmp(item_name[i], name) == 0) {
+            return 1; // Duplicate found
+        }
+    }
+    return 0; // No duplicate found
+
 }
 
 void product_menu() {
