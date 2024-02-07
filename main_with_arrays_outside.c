@@ -17,6 +17,9 @@ int item_quantity[MAX] = {1, 2, 3, 4, 5};
 int item_price[MAX] = {1000, 2000, 3000, 44000, 5000};
 char item_manufactoring_date[MAX][MAX] = {"22/10/2023", "23/10/2023", "24/10/2023", "25/10/2023", "26/10/2023"};
 char item_expiry_date[MAX][MAX] = {"22/10/2024", "23/10/2024", "24/10/2024", "25/10/2024", "26/10/2024"};
+char search_result[MAX];
+int count = 0;
+
 
 // Main program
 int main() {
@@ -44,6 +47,7 @@ int main() {
                     getch();
                 }
                 else {
+                    printf("\n");
                     printf("Returning to main menu...");
                     sleep(2);
                 }
@@ -80,8 +84,10 @@ int main() {
                     printf("\n");
                     printf("\n                          Which field do you want to search (Press a listed number)     ");
                     int choice_4 = getch() - '0'; 
+                    strcpy(search_result, "");
 
                     search_by_field(choice_4);
+                    display_result_list();
 
                     printf("\n                          Press b to search again or Enter to return to main menu     ");
                     char choice_4_1 = getch();
@@ -108,16 +114,48 @@ int main() {
                 }
                 break;
             }
-            case 9:
+            case 6: { // Delete the found item
+                while (1) {
+                    display_all_items(item_name, item_quantity, item_price, item_manufactoring_date, item_expiry_date);
+                    printf("\n                          1.     Name     ");
+                    printf("\n                          2.     Quantity     ");
+                    printf("\n                          3.     Price     ");
+                    printf("\n                          4.     Manufactoring Date     ");
+                    printf("\n                          5.     Expiry Date     ");
+                    printf("\n");
+                    printf("\n                  Which field do you want an item to delete in  (Press a listed number)     ");
+                    int choice_6 = getch() - '0';
+
+                    delete_found_item(choice_6);
+                    printf(" \n");
+
+                    printf("\n                     Press r to continue delete or Enter to return to main menu     ");
+                    char choice_6_1 = getch();
+                    if (choice_6_1 != 'B' && choice_6_1 != 'b') {
+                        break;
+                    }                    
+                }
+                break;
+            }
+            case 7: { // Delete all data
+                display_all_items(item_name, item_quantity, item_price, item_manufactoring_date, item_expiry_date);
+                delete_all_data();
+
+                printf(" \n");
+                printf("\n                          Press any keys to return to main menu     ");
+                getch();
+                break;
+            }
+            case 8:
                 break;
             default: {
-                printf("Enter a valid option!");
+                printf("\n                                Enter a valid option!");
                 sleep(1);
                 break;
             }
 
         }
-        if (choice == 9) {
+        if (choice == 8) {
             printf("\nExiting...");
             sleep(1);
             break;
@@ -143,14 +181,14 @@ void main_menu_display() {
     printf("*                                  5. Export data to a text file.                         *\n");
     printf("*                                  6. Delete matched item.                                *\n");
     printf("*                                  7. Delete all items.                                   *\n");
-    printf("*                                  8. Delete all items.                                   *\n");
-    printf("*                                  9. Quit.                                               *\n");
+    printf("*                                  8. Quit.                                               *\n");
     printf("*                                                                                         *\n");
     printf("*******************************************************************************************\n");
     printf("\n                                Press a number to process      ");
 }
 
 void display_all_items(char item_name[MAX][MAX], int item_quantity[MAX], int item_price[MAX], char item_manufactoring_date[MAX][MAX], char item_expiry_date[MAX][MAX]) {
+    int j = 1;
     system("cls");
     printf("**********************************************************************************************************\n");
     printf("*                                              All Items                                                 *\n");
@@ -159,7 +197,10 @@ void display_all_items(char item_name[MAX][MAX], int item_quantity[MAX], int ite
     printf("*   No.  |   Name              |  Quantity    |   Price      |   Manufactoring Date   |   Expiry Date    *\n");
     printf("*                                                                                                        *\n");
     for (int i = 0; i <= items; i++) {
-        printf("*   %-1d    |   %-13s     |   %-3d        |   %-7d    |   %s           |   %s     *\n", i + 1, item_name[i], item_quantity[i], item_price[i], item_manufactoring_date[i], item_expiry_date[i]);
+        if (item_name[i][0] != '\0') {
+            printf("*   %-1d    |   %-13s     |   %-3d        |   %-7d    |   %s           |   %s     *\n", j, item_name[i], item_quantity[i], item_price[i], item_manufactoring_date[i], item_expiry_date[i]);
+            j++;
+        }
     }
     printf("*                                                                                                        *\n");
     printf("**********************************************************************************************************\n");
@@ -169,15 +210,15 @@ void add_an_item() {
     items++;
     item_no[items] = items + 1;
     printf("\n");
-    printf("                  Enter an item name: ");
+    printf("                  Enter an item name (string): ");
     scanf("%s", item_name[items]);
-    printf("                  Enter an item quantity: ");
+    printf("                  Enter an item quantity (number): ");
     scanf("%d", &item_quantity[items]);
-    printf("                  Enter an item price: ");
+    printf("                  Enter an item price (number): ");
     scanf("%d", &item_price[items]);
-    printf("                  Enter an item manufactoring date: ");
+    printf("                  Enter an item manufactoring date (string): ");
     scanf("%s", item_manufactoring_date[items]);
-    printf("                  Enter an item expiry date: ");
+    printf("                  Enter an item expiry date (string): ");
     scanf("%s", item_expiry_date[items]);
     printf("\n");
     printf("                  Item added successfully!");    
@@ -244,13 +285,13 @@ void sort_by_field(int choice_3) {
 }
 
 void search_by_field(int choice_4) {
-    char search_result[MAX];
-    int count = 0;
+    strcpy(search_result, "");
+    count = 0;
     switch (choice_4) {
         case 1: {
             char search_name[MAX];
             printf("     \n");
-            printf("\n                          Enter the name you want to search:     ");
+            printf("\n                          Enter the name:     ");
             scanf("%s", search_name);
             for (int i = 0; i <= items; i++) {
                 if (strcmp(search_name, item_name[i]) == 0) {
@@ -263,7 +304,7 @@ void search_by_field(int choice_4) {
         case 2: {
             int search_quantity;
             printf("     \n");
-            printf("\n                          Enter the quantity you want to search:     ");
+            printf("\n                          Enter the quantity:     ");
             scanf("%d", &search_quantity);
             for (int i = 0; i <= items; i++) {
                 if (search_quantity == item_quantity[i]) {
@@ -276,7 +317,7 @@ void search_by_field(int choice_4) {
         case 3: {
             int search_price;
             printf("     \n");
-            printf("\n                          Enter the price you want to search:     ");
+            printf("\n                          Enter the price:     ");
             scanf("%d", &search_price);
             for (int i = 0; i <= items; i++) {
                 if (search_price == item_price[i]) {
@@ -289,7 +330,7 @@ void search_by_field(int choice_4) {
         case 4: {
             char search_manufactoring_date[MAX];
             printf("     \n");
-            printf("\n                          Enter the manufactoring date you want to search:     ");
+            printf("\n                          Enter the manufactoring date:     ");
             scanf("%s", search_manufactoring_date);
             for (int i = 0; i <= items; i++) {
                 if (strcmp(search_manufactoring_date, item_name[i]) == 0) {
@@ -302,7 +343,7 @@ void search_by_field(int choice_4) {
         case 5: {
             char search_expiry_date[MAX];
             printf("     \n");
-            printf("\n                          Enter the expiry date you want to search:     ");
+            printf("\n                          Enter the expiry date:     ");
             scanf("%s", search_expiry_date);
             for (int i = 0; i <= items; i++) {
                 if (strcmp(search_expiry_date, item_name[i]) == 0) {
@@ -315,6 +356,9 @@ void search_by_field(int choice_4) {
         default: 
             break;
     }
+}
+
+void display_result_list() {
     if (count == 0) {
         printf("\n                          No items found!");
     }
@@ -340,6 +384,7 @@ void search_by_field(int choice_4) {
 
 void export_data_to_file() {
     FILE *items_txt;
+    int j = 1;
     items_txt = fopen("items.txt", "w");
     fprintf(items_txt, "**********************************************************************************************************\n");
     fprintf(items_txt, "*                                              All Items                                                 *\n");
@@ -348,7 +393,10 @@ void export_data_to_file() {
     fprintf(items_txt, "*   No.  |   Name              |  Quantity    |   Price      |   Manufactoring Date   |   Expiry Date    *\n");
     fprintf(items_txt, "*                                                                                                        *\n");
     for (int i = 0; i <= items; i++) {
-        fprintf(items_txt, "*   %-1d    |   %-13s     |   %-3d        |   %-7d    |   %s           |   %s     *\n", i + 1, item_name[i], item_quantity[i], item_price[i], item_manufactoring_date[i], item_expiry_date[i]);
+        if (item_name[i][0] != '\0') {
+            fprintf(items_txt, "*   %-1d    |   %-13s     |   %-3d        |   %-7d    |   %s           |   %s     *\n", j, item_name[i], item_quantity[i], item_price[i], item_manufactoring_date[i], item_expiry_date[i]);
+            j++;
+        }
     }
     fprintf(items_txt, "*                                                                                                        *\n");
     fprintf(items_txt, "**********************************************************************************************************\n");
@@ -368,4 +416,53 @@ void open_file() {
         printf("%c", c);
     }
     fclose(items_txt);
+}
+
+void delete_found_item(int choice_6) {
+    search_by_field(choice_6);
+    display_result_list();
+    printf("     \n");
+    if (count != 0) {
+        printf("                     Do you want to delete all found items? (yes/no) (Press y or n)     ");
+        char choice_6_6_1 = getch();
+
+        if (choice_6_6_1 == 'Y' || choice_6_6_1 == 'y') {
+            for (int i = 0; i <= items; i++) {
+                if (search_result[i] == 1) {
+                    strcpy(item_name[i], "");
+                    item_quantity[i] = 0;
+                    item_price[i] = 0;
+                    strcpy(item_manufactoring_date[i], "");
+                    strcpy(item_expiry_date[i], "");
+                }
+            }
+            printf("\n");
+            printf("                     %d items deleted!", count);
+        
+        } else {
+            printf("\n");
+            printf("                     No items deleted!");
+        } 
+    }
+}
+
+void delete_all_data() {
+    printf("     \n");
+    printf("                     Do you want to delete all items? (yes/no) (Press y or n)     ");
+    char choice_7 = getch();
+    if (choice_7 == 'Y' || choice_7 == 'y') {
+        for (int i = 0; i <= items; i++) {
+            strcpy(item_name[i], "");
+            item_quantity[i] = 0;
+            item_price[i] = 0;
+            strcpy(item_manufactoring_date[i], "");
+            strcpy(item_expiry_date[i], "");
+        }
+        items = -1;
+        printf(" \n");
+        printf("\n                     All items deleted!");
+    } else {
+        printf(" \n");
+        printf("\n                     No items deleted!");
+    }
 }
