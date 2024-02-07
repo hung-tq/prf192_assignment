@@ -339,33 +339,33 @@ void search_by_field(int choice_4) {
 }
 
 void export_data_to_file() {
-    FILE *fptr;
-    fptr = fopen("items.txt", "w");
-    fprintf(fptr, "**********************************************************************************************************\n");
-    fprintf(fptr, "*                                              All Items                                                 *\n");
-    fprintf(fptr, "**********************************************************************************************************\n");
-    fprintf(fptr, "*                                                                                                        *\n");
-    fprintf(fptr, "*   No.  |   Name              |  Quantity    |   Price      |   Manufactoring Date   |   Expiry Date    *\n");
-    fprintf(fptr, "*                                                                                                        *\n");
+    FILE *items_txt;
+    items_txt = fopen("items.txt", "w");
+    fprintf(items_txt, "**********************************************************************************************************\n");
+    fprintf(items_txt, "*                                              All Items                                                 *\n");
+    fprintf(items_txt, "**********************************************************************************************************\n");
+    fprintf(items_txt, "*                                                                                                        *\n");
+    fprintf(items_txt, "*   No.  |   Name              |  Quantity    |   Price      |   Manufactoring Date   |   Expiry Date    *\n");
+    fprintf(items_txt, "*                                                                                                        *\n");
     for (int i = 0; i <= items; i++) {
-        fprintf(fptr, "*   %-1d    |   %-13s     |   %-3d        |   %-7d    |   %s           |   %s     *\n", i + 1, item_name[i], item_quantity[i], item_price[i], item_manufactoring_date[i], item_expiry_date[i]);
+        fprintf(items_txt, "*   %-1d    |   %-13s     |   %-3d        |   %-7d    |   %s           |   %s     *\n", i + 1, item_name[i], item_quantity[i], item_price[i], item_manufactoring_date[i], item_expiry_date[i]);
     }
-    fprintf(fptr, "*                                                                                                        *\n");
-    fprintf(fptr, "**********************************************************************************************************\n");
-    fclose(fptr);
+    fprintf(items_txt, "*                                                                                                        *\n");
+    fprintf(items_txt, "**********************************************************************************************************\n");
+    fclose(items_txt);
     printf("\n                                  Data exported to items.txt!");
 }
 
 void open_file() {
-    FILE *fptr;
-    fptr = fopen("items.txt", "r");
-    if (fptr == NULL) {
+    FILE *items_txt;
+    items_txt = fopen("items.txt", "r");
+    if (items_txt == NULL) {
         printf("File does not exist!");
         return;
     }
     char c;
-    while ((c = fgetc(fptr)) != EOF) {
+    while ((c = fgetc(items_txt)) != EOF) {
         printf("%c", c);
     }
-    fclose(fptr);
+    fclose(items_txt);
 }
