@@ -1,7 +1,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "main_with_arrays_outside.h"
+#include "product_menu.h"
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
