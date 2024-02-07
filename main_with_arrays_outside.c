@@ -69,7 +69,7 @@ int main() {
                 getch();
                 break;
             }
-            case 4: {
+            case 4: { // Search by fields
                 while (1) {
                     display_all_items(item_name, item_quantity, item_price, item_manufactoring_date, item_expiry_date);
                     printf("\n                          1.     Name     ");
