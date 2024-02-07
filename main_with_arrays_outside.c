@@ -36,7 +36,7 @@ int main() {
                 display_all_items(item_name, item_quantity, item_price, item_manufactoring_date, item_expiry_date);
                 add_an_item();
                 printf("\n");
-                printf("                  Press R to refresh the list, any other key to return to main menu:    ");
+                printf("                  Press r to refresh the list, any other key to return to main menu:    ");
                 char choice_2 = getch();
                 if (choice_2 == 'R' || choice_2 == 'r') {
                     display_all_items(item_name, item_quantity, item_price, item_manufactoring_date, item_expiry_date);
