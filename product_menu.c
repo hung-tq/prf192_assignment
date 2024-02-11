@@ -11,16 +11,15 @@
 #define MAXDB 1000 // Size of database 
 #define MAXLENGTH 1000 // Length of string
 
-int items = 5;
+int  items = 5;
 char catalogue[6][20] = {"No.", "name", "weight", "price", "manufactoring date", "expiry date"};
 char item_name[MAXDB][MAXLENGTH] = {"chicken", "apple", "banana", "beef", "pineapple", "rice"};
-int item_weight[MAXDB] = {1, 2, 3, 4, 5, 800000};
-int item_price[MAXDB] = {1000, 2000, 3000, 44000, 5000, 5000000};
+int  item_weight[MAXDB] = {1, 2, 3, 4, 5, 800000};
+int  item_price[MAXDB] = {1000, 2000, 3000, 44000, 5000, 5000000};
 char item_manufactoring_date[MAXDB][MAXLENGTH] = {"22/10/2023", "23/10/2023", "24/10/2023", "25/10/2023", "n", "12/12/1222"};
 char item_expiry_date[MAXDB][MAXLENGTH] = {"22/10/2024", "23/10/2024", "24/10/2024", "25/10/2024", "non", "13/13/1313"};
-int search_result[MAXDB];
-int count = 0;
-
+int  search_result[MAXDB];
+int  count = 0;
 
 // Main program
 void product_menu() {
@@ -39,7 +38,7 @@ void product_menu() {
                 display_all_items();
                 if (add_an_item() == 1) {
                     printf("\n                                            Add item successfully!\n");
-                    printf("\n                     Press r to refresh the list, any other key to return to main menu    ");
+                    printf("\n                     Press r to refresh the list, any other keys to return to main menu    ");
                     char choice_2 = getch();
                     if (choice_2 == 'R' || choice_2 == 'r') {
                         display_all_items();
@@ -82,7 +81,7 @@ void product_menu() {
                     memset(search_result, 0, MAXDB); // Set all elements to 0
                     if (search_by_field(choice_4) == 1) {
                         display_result_list();
-                        printf("\n                          Press r to search again or Enter to return to main menu     ");
+                        printf("\n                          Press r to search again, any other keys to return to main menu     ");
                         char choice_4_1 = getch();
                         if (choice_4_1 != 'R' && choice_4_1 != 'r') {
                             break;
@@ -99,7 +98,7 @@ void product_menu() {
             case 5: { // Print all the data to a text file
                 printf("\n");
                 export_data_to_file();
-                printf("\n\n                           Press o to open file or Enter to return to main menu    ");
+                printf("\n\n                           Press o to open file, any other keys to return to main menu    ");
                 char choice_5 = getch();
                 printf("\n");
                 if (choice_5 == 'O' || choice_5 == 'o') {
@@ -120,7 +119,7 @@ void product_menu() {
                     printf("\n                  Which field do you want an item to delete in  (Press a listed number)     ");
                     int choice_6 = getch() - '0';
                     if (delete_found_item(choice_6) == 1) {
-                        printf("\n\n                     Press r to continue delete or Enter to return to main menu     ");
+                        printf("\n\n                     Press r to continue delete, any other keys to return to main menu     ");
                         char choice_6_1 = getch();
                         if (choice_6_1 != 'R' && choice_6_1 != 'r') {
                             break;
@@ -158,7 +157,7 @@ void product_menu() {
 
 // Function definitions
 void main_menu_display() {
-    system("cls");
+    system("cls"); // Clear the terminal
     printf("***************************************************************************************************************\n");
     printf("*                                               Product Menu                                                  *\n");
     printf("***************************************************************************************************************\n");
@@ -177,18 +176,18 @@ void main_menu_display() {
 }
 
 void display_catalogue() {
-    printf("\n                          1.     Name     ");
-    printf("\n                          2.     Weight (kg)     ");
-    printf("\n                          3.     Price (per kg)     ");
-    printf("\n                          4.     Manufactoring Date     ");
-    printf("\n                          5.     Expiry Date     ");
-    printf("\n                          6.     Return to menu     ");
+    printf("\n                          1.     Name");
+    printf("\n                          2.     Weight (kg)");
+    printf("\n                          3.     Price (per kg)");
+    printf("\n                          4.     Manufactoring Date");
+    printf("\n                          5.     Expiry Date");
+    printf("\n                          6.     Return to menu");
     printf("\n");
 }
 
 void display_all_items() {
     int j = 1;
-    system("cls");
+    system("cls"); // Clear the terminal
     printf("***************************************************************************************************************\n");
     printf("*                                               Product List                                                  *\n");
     printf("***************************************************************************************************************\n");
@@ -306,6 +305,7 @@ int sort_by_field(int choice_3) {
             }
         }            
     }
+
     return 1; // Valid option
 }
 
@@ -378,6 +378,7 @@ int search_by_field(int choice_4) {
         default: 
             return 0; // Invalid option
     }
+    
     return 1; // Valid option
 }
 
