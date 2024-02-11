@@ -3,7 +3,7 @@
 
 void product_menu();            // Product menu
 
-void main_menu_display();       // Product menu display
+void product_menu_display();       // Product menu display
 void display_catalogue();       // Display catalogues
 void display_all_items();       // Display product list
 int  add_an_item();             // Add a product to database
