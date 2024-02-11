@@ -9,7 +9,7 @@
 #include "product_menu.h"
 
 #define MAXDB 1000 // Size of database 
-#define MAXLENGTH 1000
+#define MAXLENGTH 1000 // Length of string
 
 int items = 5;
 char catalogue[6][20] = {"No.", "name", "weight", "price", "manufactoring date", "expiry date"};
@@ -28,7 +28,6 @@ void product_menu() {
     while (1) {
         main_menu_display();
         int choice = getch() - '0';
-
         switch (choice) {
             case 1: { // Display all items
                 display_all_items();
@@ -311,10 +310,10 @@ int sort_by_field(int choice_3) {
 }
 
 int search_by_field(int choice_4) {
-    memset(search_result, 0, MAXDB); // Set all elements to 0
+    memset(search_result, 0, MAXDB); // Set all elements of search_result to 0
     count = 0;
     switch (choice_4) {
-        case 1: {
+        case 1: { // Search by name
             char search_name[MAXLENGTH];
             printf("\n\n                          Enter the name:     ");
             scanf("%s", search_name);
@@ -326,7 +325,7 @@ int search_by_field(int choice_4) {
             }
             break;
         }
-        case 2: {
+        case 2: { // Search by weight
             int search_weight;
             printf("\n\n                          Enter the quantity:     ");
             scanf("%d", &search_weight);
@@ -338,7 +337,7 @@ int search_by_field(int choice_4) {
             }
             break;
         }
-        case 3: {
+        case 3: { // Search by price
             int search_price;
             printf("\n\n                          Enter the price:     ");
             scanf("%d", &search_price);
@@ -350,7 +349,7 @@ int search_by_field(int choice_4) {
             }
             break;
         }
-        case 4: {
+        case 4: { // Search by manufactoring date
             char search_manufactoring_date[MAXLENGTH];
             printf("\n\n                          Enter the manufactoring date:     ");
             scanf("%s", search_manufactoring_date);
@@ -362,7 +361,7 @@ int search_by_field(int choice_4) {
             }
             break;
         }
-        case 5: {
+        case 5: { // Search by expiry date
             char search_expiry_date[MAXLENGTH];
             printf("\n\n                          Enter the expiry date:     ");
             scanf("%s", search_expiry_date);
@@ -435,7 +434,7 @@ void open_file() {
         printf("File does not exist!");
         return;
     }
-    printf(" \n");
+    printf("\n");
     char c;
     while ((c = fgetc(items_txt)) != EOF) {
         printf("%c", c);
