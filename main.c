@@ -6,6 +6,5 @@
 #include "customer_menu.c"
 
 int main() {
-
     product_menu();
 }
