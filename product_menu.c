@@ -30,23 +30,23 @@ void product_menu() {
         switch (choice_product_menu) {
             case 1: { // Display all items
                 display_all_items();
-                printf("\n                               Press any keys to return to main menu     ");
+                printf("\n                               Press p to return to main product menu     ");
                 getch();
                 break;
             }
             case 2: { // Add an item
                 display_all_items();
-                if (add_an_item() == 1) {
+                if (item_input(0, 1, 1, 1, 1, 1) == 1) {
                     printf("\n                                            Add item successfully!\n");
-                    printf("\n                     Press r to refresh the list, any other keys to return to main menu    ");
+                    printf("\n                     Press r to refresh the list, p to return to product menu    ");
                     char choice_product_menu_2_1 = getch();
                     if (choice_product_menu_2_1 == 'R' || choice_product_menu_2_1 == 'r') {
                         display_all_items();
-                        printf("\n                                   Press any keys to return to main menu     ");
+                        printf("\n                                   Press p to return to product menu     ");
                         getch();
                     }
                     else {
-                        printf("\n\n                                            Returning to main menu...");
+                        printf("\n\n                                            Returning to product menu...");
                         sleep(1);
                     }
                 }
@@ -60,7 +60,7 @@ void product_menu() {
                     int choice_product_menu_3_1 = getch() - '0';               
                     if (sort_by_field(choice_product_menu_3_1) == 1) {
                         printf("\n\n                          Sort by %s successfully!\n", catalogue[choice_product_menu_3_1]);
-                        printf("\n                          Press any keys to return to main menu     ");
+                        printf("\n                          Press p to return to product menu     ");
                         getch();
                         break;                
                     } else if (sort_by_field(choice_product_menu_3_1) == 0) {
@@ -81,9 +81,9 @@ void product_menu() {
                     memset(product_search_result, 0, MAXDB); // Set all elements to 0
                     if (search_by_field(choice_product_menu_4_1) == 1) {
                         display_result_list();
-                        printf("\n                          Press r to search again, any other keys to return to main menu     ");
+                        printf("\n                          Press c to search again, any p to return to product menu     ");
                         char choice_product_menu_4_2 = getch();
-                        if (choice_product_menu_4_2 != 'R' && choice_product_menu_4_2 != 'r') {
+                        if (choice_product_menu_4_2 != 'P' && choice_product_menu_4_2 != 'p') {
                             break;
                         }
                     } else if (search_by_field(choice_product_menu_4_1) == 0) {
@@ -98,16 +98,16 @@ void product_menu() {
             case 5: { // Print all the data to a text file
                 printf("\n");
                 export_data_to_file();
-                printf("\n\n                           Press o to open file, any other keys to return to main menu    ");
+                printf("\n\n                           Press o to open file, p to return to product menu    ");
                 char choice_product_menu_5_1 = getch();
                 printf("\n");
                 if (choice_product_menu_5_1 == 'O' || choice_product_menu_5_1 == 'o') {
                     open_file();
-                    printf("\n                                  Press any keys to return to main menu     ");
+                    printf("\n                                  Press p to return to product menu     ");
                     getch();
                 }
                 else {
-                    printf("\n                                  Returning to main menu...");
+                    printf("\n                                  Returning to product menu...");
                     sleep(1);
                 }
                 break;
@@ -119,9 +119,9 @@ void product_menu() {
                     printf("\n                  Which field do you want an item to delete in  (Press a listed number)     ");
                     int choice_product_menu_6_1 = getch() - '0';
                     if (delete_found_item(choice_product_menu_6_1) == 1) {
-                        printf("\n\n                     Press r to continue delete, any other keys to return to main menu     ");
+                        printf("\n\n                     Press c to continue deleting, p to return to product menu     ");
                         char choice_product_menu_6_2 = getch();
-                        if (choice_product_menu_6_2 != 'R' && choice_product_menu_6_2 != 'r') {
+                        if (choice_product_menu_6_2 != 'P' && choice_product_menu_6_2 != 'p') {
                             break;
                         } 
                     } else if  (delete_found_item(choice_product_menu_6_1) == 0) {
@@ -135,12 +135,78 @@ void product_menu() {
             case 7: { // Delete all data
                 display_all_items();
                 delete_all_data();
-                printf("\n\n                          Press any keys to return to main menu     ");
+                printf("\n\n                          Press p to return to product menu     ");
                 getch();
                 break;
             }
             case 8: // Quit
                 break;
+            case 9: { // Modify an item
+                while (1) 
+                {
+                    int choice_product_menu_9_1;
+                    char chosenFields[5];
+                    int isQuit = 0, isBack = 0, isName = 0, isWeight = 0, isPrice = 0, isManufactoringDate = 0, isExpiryDate = 0;
+                    int sizeOfChosenFields;
+                    display_all_items();
+                    printf("\n\n                 Enter the index of the item you want to modify or q to return back:     ");
+                    scanf("%d", &choice_product_menu_9_1);
+                    if (choice_product_menu_9_1 - '0' == 65) 
+                        break;
+                    display_catalogue();
+                    printf("\n                 Enter the list of fields of you want to modify or q to return back:     ");
+                    scanf("%s", chosenFields);
+                    if (strlen(chosenFields) < 1 || strlen(chosenFields) > 5) {
+                        printf("\n\n                                     Enter a valid option!");
+                        sleep(1);
+                        continue;
+                    }
+                    for (int i = 0; i < strlen(chosenFields); i++) {
+                        if (chosenFields[i] == '1') {
+                            isName = 1;
+                        }
+                        else if (chosenFields[i] == '2') 
+                            isWeight = 1;
+                        else if (chosenFields[i] == '3') 
+                            isPrice = 1;
+                        else if (chosenFields[i] == '4') 
+                            isManufactoringDate = 1;
+                        else if (chosenFields[i] == '5') 
+                            isExpiryDate = 1;
+                        else {
+                            // isQuit = 1;
+                            printf("\n                                     Returning back...");
+                            sleep(1);
+                            break;
+                        }
+                    }
+                    // if (isQuit)
+                    //     break;
+                    if (modify_item(choice_product_menu_9_1, isName, isWeight, isPrice, isManufactoringDate, isExpiryDate) == 1) {
+                        printf("\n\n                                            Modify item successfully!\n");
+                        sleep(1);
+                        display_all_items();
+                        printf("\n                                 Press c to continue editing or p to return to product menu    ");
+                        char choice_product_menu_9_2 = getch();
+                        if (choice_product_menu_9_2 == 'P' || choice_product_menu_9_2 == 'p') 
+                            break;
+                        else if (choice_product_menu_9_2 == 'C' || choice_product_menu_9_2 == 'c') 
+                            continue;
+                        else 
+                        {
+                            printf("\n\n                                            Returning to main menu...");
+                            sleep(1);
+                            break;
+                        }
+                    } else 
+                    {
+                        printf("\n\n                                     Returning to back...");
+                        sleep(1);
+                        continue;
+                    }
+                }
+                break;
+            }
             default: { // Invalid option
                 printf("\n\n                                     Enter a valid option!");
                 sleep(1);
@@ -158,21 +224,25 @@ void product_menu() {
 // Function definitions
 void product_menu_display() {
     system("cls"); // Clear the terminal
-    printf("***************************************************************************************************************\n");
-    printf("*                                               Product Menu                                                  *\n");
-    printf("***************************************************************************************************************\n");
-    printf("*                                                                                                             *\n");
-    printf("*                                         1. Display all items.                                               *\n");
-    printf("*                                         2. Add an item.                                                     *\n");
-    printf("*                                         3. Sort all items.                                                  *\n");
-    printf("*                                         4. Look for an item.                                                *\n");
-    printf("*                                         5. Export data to a text file.                                      *\n");
-    printf("*                                         6. Delete matched item.                                             *\n");
-    printf("*                                         7. Delete all items.                                                *\n");
-    printf("*                                         8. Quit.                                                            *\n");
-    printf("*                                                                                                             *\n");
-    printf("***************************************************************************************************************\n");
-    printf("\n                                     Press a number to process         ");
+    printf("************************************************************************************************************************\n");
+    printf("*                                               Product Menu                                                           *\n");
+    printf("************************************************************************************************************************\n");
+    printf("*                                                                                                                      *\n");
+    printf("*                                         1. Display all items.                                                        *\n");
+    printf("*                                         2. Add an item.                                                              *\n");
+    printf("*                                         3. Sort all items.                                                           *\n");
+    printf("*                                         4. Look for an item.                                                         *\n");
+    printf("*                                         5. Export data to a text file.                                               *\n");
+    printf("*                                         6. Delete matched item.                                                      *\n");
+    printf("*                                         7. Delete all items.                                                         *\n");
+    printf("*                                         8. Quit.                                                                     *\n");
+    printf("*                                                                                                                      *\n");
+    printf("************************************************************************************************************************\n");
+    printf("\n                                            Shortcut lists:");
+    printf("\n\n                                      p: To return the main product menu");
+    printf("\n                                      c: To continue");
+    printf("\n                                      r: To refresh the list");
+    printf("\n\n                                     Press a number to process         ");
 }
 
 void display_catalogue() {
@@ -204,45 +274,70 @@ void display_all_items() {
     printf("***************************************************************************************************************\n");
 }
 
-int add_an_item() {
+int item_input(int index, int isName, int isWeight, int isPrice, int isManufactoringDate, int isExpiryDate) {
     char temp_item_name[MAXLENGTH];
     int temp_item_weight;
     int temp_item_price;
     char temp_item_manufactoring_date[MAXLENGTH];
     char temp_item_expiry_date[MAXLENGTH];
 
-    printf("\n        Item name (string)              (Enter q to return to main menu):     ");
-    scanf("%s", temp_item_name);
-    if (strcmp(temp_item_name, "q") == 0) {
-        return -1;// Return to menu
+    if (isName)
+    {
+        printf("\n        Item name (string)              (Enter q to return to main menu):     ");
+        scanf("%s", temp_item_name);
+        if (strcmp(temp_item_name, "q") == 0) 
+            return -1; // Return to menu
     }
-    printf("        Weight (kg) (integer)           (Enter q to return to main menu):     ");
-    scanf("%d", &temp_item_weight);
-    if (temp_item_weight == 'q') {
-        return -1;// Return to menu
+    if (isWeight) 
+    {
+        printf("        Weight (kg) (integer)           (Enter q to return to main menu):     ");
+        scanf("%d", &temp_item_weight);
+        if (temp_item_weight == 'q') 
+            return -1; // Return to menu
     }
-    printf("        Price (per kg) (integer)        (Enter q to return to main menu):     ");
-    scanf("%d", &temp_item_price);
-    if (temp_item_price == 'q') {
-        return -1;// Return to menu
+    if (isPrice)
+    {
+        printf("        Price (per kg) (integer)        (Enter q to return to main menu):     ");
+        scanf("%d", &temp_item_price);
+        if (temp_item_price == 'q') 
+            return -1; // Return to menu
     }
-    printf("        Manufactoring date (dd/mm/yyyy) (Enter q to return to main menu):     ");
-    scanf("%s", temp_item_manufactoring_date);
-    if (strcmp(temp_item_manufactoring_date, "q") == 0) {
-        return -1;// Return to menu
+    if (isManufactoringDate) 
+    {
+        printf("        Manufactoring date (dd/mm/yyyy) (Enter q to return to main menu):     ");
+        scanf("%s", temp_item_manufactoring_date);
+        if (strcmp(temp_item_manufactoring_date, "q") == 0)
+            return -1; // Return to menu
     }
-    printf("        Expiry date (dd/mm/yyyy)        (Enter q to return to main menu):     ");
-    scanf("%s", temp_item_expiry_date);
-    if (strcmp(temp_item_expiry_date, "q") == 0) {
-        return -1; // Return to menu
-    }
+    if (isExpiryDate) 
+    {
+        printf("        Expiry date (dd/mm/yyyy)        (Enter q to return to main menu):     ");
+        scanf("%s", temp_item_expiry_date);
+        if (strcmp(temp_item_expiry_date, "q") == 0) 
+            return -1; // Return to menu
 
-    items++;
-    strcpy(item_name[items], temp_item_name);
-    item_weight[items] = temp_item_weight;
-    item_price[items] = temp_item_price;
-    strcpy(item_manufactoring_date[items], temp_item_manufactoring_date);
-    strcpy(item_expiry_date[items], temp_item_expiry_date);
+    }
+    if (index == 0) 
+    {
+        items++;
+        strcpy(item_name[items], temp_item_name);
+        item_weight[items] = temp_item_weight;
+        item_price[items] = temp_item_price;
+        strcpy(item_manufactoring_date[items], temp_item_manufactoring_date);
+        strcpy(item_expiry_date[items], temp_item_expiry_date);
+    } else 
+    {   
+        if (isName)
+            strcpy(item_name[index], temp_item_name);
+        if (isWeight)
+            item_weight[index] = temp_item_weight;
+        if (isPrice)
+            item_price[index] = temp_item_price;
+        if (isManufactoringDate)
+            strcpy(item_manufactoring_date[index], temp_item_manufactoring_date);
+        if (isExpiryDate)
+            strcpy(item_expiry_date[index], temp_item_expiry_date);
+    }
   
     return 1; // Valid option    
 }
@@ -457,6 +552,7 @@ int delete_found_item(int choice_product_menu_6_1) {
                         item_price[i] = 0;
                         strcpy(item_manufactoring_date[i], "");
                         strcpy(item_expiry_date[i], "");
+                        items--;
                     }
                 }
                 printf("\n\n                     %d items deleted!", product_count);
@@ -487,4 +583,25 @@ void delete_all_data() {
     } else {
         printf("\n\n                     No items deleted!");
     }
+}
+
+void display_search_menu() {
+
+}
+
+int modify_item(int index, int isName, int isWeight, int isPrice, int isManufactoringDate, int isExpiryDate) {
+    int temp_index = -1;
+    for (int i = 0; i <= items; i++) {
+        if (item_name[i][0] != '\0') {
+            temp_index++;
+            if (temp_index == index) {
+                break;
+            }
+        }
+    }
+    return item_input(temp_index - 1, isName, isWeight, isPrice, isManufactoringDate, isExpiryDate);
+}
+
+void refresh_list(int option) {
+
 }
