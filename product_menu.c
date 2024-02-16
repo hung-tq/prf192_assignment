@@ -250,7 +250,7 @@ void product_menu(int columns, int rows)
                 }
                 break;
             }
-            
+
             default: // Invalid option
             { 
                 printf("\n\n                                     Enter a valid option!");
@@ -441,24 +441,30 @@ int sort_by_field(int choice_product_menu_3_1)
                     if (strcmp(item_name[i], item_name[j]) > 0) 
                         swap_sort(i, j);
                     break;
+
                 case 2:
                     if (item_weight[i] > item_weight[j])
                         swap_sort(i, j);
                     break;
+
                 case 3:
                     if (item_price[i] > item_price[j])
                         swap_sort(i, j);
                     break;
+
                 case 4:
                     if (strcmp(item_manufactoring_date[i], item_manufactoring_date[j]) > 0) 
                         swap_sort(i, j);       
                     break;
+
                 case 5:
                     if (strcmp(item_expiry_date[i], item_expiry_date[j]) > 0) 
                         swap_sort(i, j);       
                     break;
+
                 case 6:
-                    return -1; // Return to menu                    
+                    return -1; // Return to menu       
+
                 default:
                     return 0; // Invalid option
             }
@@ -490,6 +496,7 @@ int search_by_field(int choice_product_menu_4_1)
             }
             break;
         }
+
         case 2: // Search by weight
         { 
             int search_weight;
@@ -505,6 +512,7 @@ int search_by_field(int choice_product_menu_4_1)
             }
             break;
         }
+
         case 3: // Search by price
         { 
             int search_price;
@@ -520,6 +528,7 @@ int search_by_field(int choice_product_menu_4_1)
             }
             break;
         }
+
         case 4: // Search by manufactoring date
         { 
             char search_manufactoring_date[MAXLENGTH];
@@ -535,6 +544,7 @@ int search_by_field(int choice_product_menu_4_1)
             }
             break;
         }
+
         case 5: // Search by expiry date
         { 
             char search_expiry_date[MAXLENGTH];
@@ -550,8 +560,10 @@ int search_by_field(int choice_product_menu_4_1)
             }
             break;
         }
+
         case 6:
             return -1; // Return to menu
+            
         default: 
             return 0; // Invalid option
     }
