@@ -14,15 +14,15 @@
 
 #define LOOP while(1)
 
-int  items = 5;
-char catalogue[6][20] = {"No.", "name", "weight", "price", "manufactoring date", "expiry date"};
-char item_name[MAXDB][MAXLENGTH] = {"chicken", "apple", "banana", "beef", "pineapple", "rice"};
-int  item_weight[MAXDB] = {1, 2, 3, 4, 5, 800000};
-int  item_price[MAXDB] = {1000, 2000, 3000, 44000, 5000, 5000000};
+int  items                                     = 5;
+char catalogue[6][20]                          = {"No.", "name", "weight", "price", "manufactoring date", "expiry date"};
+char item_name[MAXDB][MAXLENGTH]               = {"chicken", "apple", "banana", "beef", "pineapple", "rice"};
+int  item_weight[MAXDB]                        = {1, 2, 3, 4, 5, 800000};
+int  item_price[MAXDB]                         = {1000, 2000, 3000, 44000, 5000, 5000000};
 char item_manufactoring_date[MAXDB][MAXLENGTH] = {"22/10/2023", "23/10/2023", "24/10/2023", "25/10/2023", "n", "12/12/1222"};
-char item_expiry_date[MAXDB][MAXLENGTH] = {"22/10/2024", "23/10/2024", "24/10/2024", "25/10/2024", "non", "13/13/1313"};
+char item_expiry_date[MAXDB][MAXLENGTH]        = {"22/10/2024", "23/10/2024", "24/10/2024", "25/10/2024", "non", "13/13/1313"};
 int  product_search_result[MAXDB];
-int  product_count = 0;
+int  product_count                             = 0;
 
 // Main program
 void product_menu(int columns, int rows) 
@@ -563,7 +563,7 @@ int search_by_field(int choice_product_menu_4_1)
 
         case 6:
             return -1; // Return to menu
-            
+
         default: 
             return 0; // Invalid option
     }
