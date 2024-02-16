@@ -7,28 +7,19 @@
 #include <conio.h>
 
 #include "product_menu.h"
-#include "console_func.c"
+#include "functions.c"
 
-#define MAXDB 1000       // Size of database 
-#define MAXLENGTH 1000   // Length of string
+#include "databases.h"
 
 #define LOOP while(1)
 
-int  items                                     = 5;
-char catalogue[6][20]                          = {"No.", "name", "weight", "price", "manufactoring date", "expiry date"};
-char item_name[MAXDB][MAXLENGTH]               = {"chicken", "apple", "banana", "beef", "pineapple", "rice"};
-int  item_weight[MAXDB]                        = {1, 2, 3, 4, 5, 800000};
-int  item_price[MAXDB]                         = {1000, 2000, 3000, 44000, 5000, 5000000};
-char item_manufactoring_date[MAXDB][MAXLENGTH] = {"22/10/2023", "23/10/2023", "24/10/2023", "25/10/2023", "n", "12/12/1222"};
-char item_expiry_date[MAXDB][MAXLENGTH]        = {"22/10/2024", "23/10/2024", "24/10/2024", "25/10/2024", "non", "13/13/1313"};
-int  product_search_result[MAXDB];
-int  product_count                             = 0;
-
-// Main program
+// Product menu
 void product_menu(int columns, int rows) 
 {
     LOOP 
     {
+        int lastIndexOfProduct = countOfDatabase(databaseProduct);
+
         product_menu_display();
         int choice_product_menu = getch() - '0';
         
@@ -36,7 +27,7 @@ void product_menu(int columns, int rows)
         {
             case 1: // Display all items
             { 
-                display_all_items();
+                databaseOutputDisplay(0, 9, databaseProduct, databaseCatalogue);
                 printf("\n                               Press p to return to main product menu     ");
                 getch();
                 break;
@@ -44,15 +35,16 @@ void product_menu(int columns, int rows)
 
             case 2: // Add an item
             { 
-                display_all_items();
-                if (item_input(0, 1, 1, 1, 1, 1) == 1) 
-                {
+                databaseOutputDisplay(0, 9, databaseProduct, databaseCatalogue);
+                if (databaseInput(0, -1, lastIndexOfProduct, databaseProduct, "-1", databaseCatalogue) == 1) 
+                {   
+                    lastIndexOfProduct++;
                     printf("\n                                            Add item successfully!\n");
                     printf("\n                     Press r to refresh the list, p to return to product menu    ");
                     char choice_product_menu_2_1 = getch();
                     if (choice_product_menu_2_1 == 'R' || choice_product_menu_2_1 == 'r') 
                     {
-                        display_all_items();
+                        databaseOutputDisplay(0, 9, databaseProduct, databaseCatalogue);
                         printf("\n                                   Press p to return to product menu     ");
                         getch();
                     }
@@ -69,7 +61,7 @@ void product_menu(int columns, int rows)
             { 
                 LOOP 
                 {
-                    display_all_items();
+                    databaseOutputDisplay(0, 9, databaseProduct, databaseCatalogue);
                     display_catalogue();
                     printf("\n                          Which field do you want to sort (Press a listed number)    ");
                     int choice_product_menu_3_1 = getch() - '0';               
@@ -228,7 +220,7 @@ void product_menu(int columns, int rows)
                         sleep(1);
                         display_all_items();
                         printf("\n                                 Press c to continue editing or p to return to product menu    ");
-                        char choice_product_menu_9_2 = getch();
+                        int choice_product_menu_9_2 = getch();
 
                         if (choice_product_menu_9_2 == 'P' || choice_product_menu_9_2 == 'p') 
                             break;
@@ -311,123 +303,106 @@ void display_option()
 
 void display_all_items() 
 {
-    int j = 1;
-    system("cls"); // Clear the terminal
-    printf("***************************************************************************************************************\n");
-    printf("*                                               Product List                                                  *\n");
-    printf("***************************************************************************************************************\n");
-    printf("*                                                                                                             *\n");
-    printf("*   No. |   Name           |   Weight (kg)   |   Price (per kg)    |   Manufactoring Date   |   Expiry Date   *\n");
-    printf("*                                                                                                             *\n");
-    for (int i = 0; i <= items; i++) 
-    {
-        if (item_name[i][0] != '\0') 
-        {
-            printf("*   %-4d|   %-12s   |   %-11d   |   %-14d    |   %-18s   |   %-11s   *\n", j, item_name[i], item_weight[i], item_price[i], item_manufactoring_date[i], item_expiry_date[i]);
-            j++;
-        }
-    }
-    printf("*                                                                                                             *\n");
-    printf("***************************************************************************************************************\n");
+
 }
 
-int item_input(int index, int isName, int isWeight, int isPrice, int isManufactoringDate, int isExpiryDate) 
-{
-    char temp_item_name[MAXLENGTH];
-    int temp_item_weight;
-    int temp_item_price;
-    char temp_item_manufactoring_date[MAXLENGTH];
-    char temp_item_expiry_date[MAXLENGTH];
+// int item_input(int index, int isName, int isWeight, int isPrice, int isManufactoringDate, int isExpiryDate) 
+// {
+//     char temp_item_name[MAXLENGTH];
+//     int temp_item_weight;
+//     int temp_item_price;
+//     char temp_item_manufactoring_date[MAXLENGTH];
+//     char temp_item_expiry_date[MAXLENGTH];
 
-    if (isName)
-    {
-        printf("\n        Item name (string)              (Enter q to return to main menu):     ");
-        scanf("%s", temp_item_name);
-        if (strcmp(temp_item_name, "q") == 0) 
-            return -1; // Return to menu
-    }
-    if (isWeight) 
-    {
-        printf("        Weight (kg) (integer)           (Enter q to return to main menu):     ");
-        scanf("%d", &temp_item_weight);
-        if (temp_item_weight == 'q') 
-            return -1; // Return to menu
-    }
-    if (isPrice)
-    {
-        printf("        Price (per kg) (integer)        (Enter q to return to main menu):     ");
-        scanf("%d", &temp_item_price);
-        if (temp_item_price == 'q') 
-            return -1; // Return to menu
-    }
-    if (isManufactoringDate) 
-    {
-        printf("        Manufactoring date (dd/mm/yyyy) (Enter q to return to main menu):     ");
-        scanf("%s", temp_item_manufactoring_date);
-        if (strcmp(temp_item_manufactoring_date, "q") == 0)
-            return -1; // Return to menu
-    }
-    if (isExpiryDate) 
-    {
-        printf("        Expiry date (dd/mm/yyyy)        (Enter q to return to main menu):     ");
-        scanf("%s", temp_item_expiry_date);
-        if (strcmp(temp_item_expiry_date, "q") == 0) 
-            return -1; // Return to menu
+//     if (isName)
+//     {
+//         printf("\n        Item name (string)              (Enter q to return to main menu):     ");
+//         scanf("%s", temp_item_name);
+//         if (strcmp(temp_item_name, "q") == 0) 
+//             return -1; // Return to menu
+//     }
+//     if (isWeight) 
+//     {
+//         printf("        Weight (kg) (integer)           (Enter q to return to main menu):     ");
+//         scanf("%d", &temp_item_weight);
+//         if (temp_item_weight == 'q') 
+//             return -1; // Return to menu
+//     }
+//     if (isPrice)
+//     {
+//         printf("        Price (per kg) (integer)        (Enter q to return to main menu):     ");
+//         scanf("%d", &temp_item_price);
+//         if (temp_item_price == 'q') 
+//             return -1; // Return to menu
+//     }
+//     if (isManufactoringDate) 
+//     {
+//         printf("        Manufactoring date (dd/mm/yyyy) (Enter q to return to main menu):     ");
+//         scanf("%s", temp_item_manufactoring_date);
+//         if (strcmp(temp_item_manufactoring_date, "q") == 0)
+//             return -1; // Return to menu
+//     }
+//     if (isExpiryDate) 
+//     {
+//         printf("        Expiry date (dd/mm/yyyy)        (Enter q to return to main menu):     ");
+//         scanf("%s", temp_item_expiry_date);
+//         if (strcmp(temp_item_expiry_date, "q") == 0) 
+//             return -1; // Return to menu
 
-    }
-    if (index == 0) 
-    {
-        items++;
-        strcpy(item_name[items], temp_item_name);
-        item_weight[items] = temp_item_weight;
-        item_price[items] = temp_item_price;
-        strcpy(item_manufactoring_date[items], temp_item_manufactoring_date);
-        strcpy(item_expiry_date[items], temp_item_expiry_date);
-    } 
-    else 
-    {   
-        if (isName)
-            strcpy(item_name[index], temp_item_name);
-        if (isWeight)
-            item_weight[index] = temp_item_weight;
-        if (isPrice)
-            item_price[index] = temp_item_price;
-        if (isManufactoringDate)
-            strcpy(item_manufactoring_date[index], temp_item_manufactoring_date);
-        if (isExpiryDate)
-            strcpy(item_expiry_date[index], temp_item_expiry_date);
-    }
+//     }
+//     if (index == 0) 
+//     {
+//         items++;
+//         strcpy(item_name[items], temp_item_name);
+//         item_weight[items] = temp_item_weight;
+//         item_price[items] = temp_item_price;
+//         strcpy(item_manufactoring_date[items], temp_item_manufactoring_date);
+//         strcpy(item_expiry_date[items], temp_item_expiry_date);
+//     } 
+//     else 
+//     {   
+//         if (isName)
+//             strcpy(item_name[index], temp_item_name);
+//         if (isWeight)
+//             item_weight[index] = temp_item_weight;
+//         if (isPrice)
+//             item_price[index] = temp_item_price;
+//         if (isManufactoringDate)
+//             strcpy(item_manufactoring_date[index], temp_item_manufactoring_date);
+//         if (isExpiryDate)
+//             strcpy(item_expiry_date[index], temp_item_expiry_date);
+//     }
   
-    return 1; // Valid option    
-}
+//     return 1; // Valid option    
+// }
 
-void swap_sort(int i, int j) 
-{
-    char temp_item_name[MAXLENGTH];
-    strcpy(temp_item_name, item_name[i]);
-    strcpy(item_name[i], item_name[j]);
-    strcpy(item_name[j], temp_item_name);
+// void swap_sort(int i, int j) 
+// {
+//     char temp_item_name[MAXLENGTH];
+//     strcpy(temp_item_name, item_name[i]);
+//     strcpy(item_name[i], item_name[j]);
+//     strcpy(item_name[j], temp_item_name);
 
-    int temp_item_weight;
-    temp_item_weight = item_weight[i];
-    item_weight[i] = item_weight[j];
-    item_weight[j] = temp_item_weight;
+//     int temp_item_weight;
+//     temp_item_weight = item_weight[i];
+//     item_weight[i] = item_weight[j];
+//     item_weight[j] = temp_item_weight;
 
-    int temp_item_price;
-    temp_item_price = item_price[i];
-    item_price[i] = item_price[j];
-    item_price[j] = temp_item_price;
+//     int temp_item_price;
+//     temp_item_price = item_price[i];
+//     item_price[i] = item_price[j];
+//     item_price[j] = temp_item_price;
 
-    char temp_item_manufactoring_date[MAXLENGTH];
-    strcpy(temp_item_manufactoring_date, item_manufactoring_date[i]);
-    strcpy(item_manufactoring_date[i], item_manufactoring_date[j]);
-    strcpy(item_manufactoring_date[j], temp_item_manufactoring_date);           
+//     char temp_item_manufactoring_date[MAXLENGTH];
+//     strcpy(temp_item_manufactoring_date, item_manufactoring_date[i]);
+//     strcpy(item_manufactoring_date[i], item_manufactoring_date[j]);
+//     strcpy(item_manufactoring_date[j], temp_item_manufactoring_date);           
 
-    char temp_item_expiry_date[MAXLENGTH];
-    strcpy(temp_item_expiry_date, item_expiry_date[i]);
-    strcpy(item_expiry_date[i], item_expiry_date[j]);
-    strcpy(item_expiry_date[j], temp_item_expiry_date);   
-}
+//     char temp_item_expiry_date[MAXLENGTH];
+//     strcpy(temp_item_expiry_date, item_expiry_date[i]);
+//     strcpy(item_expiry_date[i], item_expiry_date[j]);
+//     strcpy(item_expiry_date[j], temp_item_expiry_date);   
+// }
 
 int sort_by_field(int choice_product_menu_3_1) 
 {

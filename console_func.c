@@ -11,7 +11,7 @@ void hidecursor()
     SetConsoleCursorInfo(consoleHandle, &info);
 }
 
-void goToXY(int columns, int rows) 
+void goToXY(short columns, short rows) 
 {
     COORD cursorPos;
     cursorPos.X = columns;

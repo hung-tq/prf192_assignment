@@ -1,74 +1,42 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <Windows.h>
+#include <vadefs.h>
+#include <string.h>
+#include <conio.h>
+
+#include "functions.c"
+
+#define MAXDB 50
 
 
-#include "main.h"
-#include "product_menu.c"
-#include "customer_menu.c"
 
 
-#define LOOP while(1)
+// Default database illustration:
 
-int main() {
-    int columns, rows;
+// product_database
+//
+//      Name, Stock, Price, Manufacturing Date, Expiry Date
+//
 
-    system("cls");
-    // hidecursor();
+// customer_database
+//
+//      Name, Age, Phone Number, Account Balance, Bonus Point
+//
 
-    LOOP {
-        system("cls");
-        CONSOLE_SCREEN_BUFFER_INFO csbi;
-        GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-        columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-        rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+int main() 
+{
+    char option[3];
 
-        printf("Columns: %d\n", columns);
-        printf("Rows: %d\n", rows);
+    printf("Welcome to the store!\n");
+    printf("Which field would you like to modify:   ");
+    scanf("%s", option);
+    int lastIndexOfProduct = countOfDatabase(product_database) - 1;
 
-        if (columns == 120 && rows == 30) 
-            break;
+    getch();
 
-        printf("Please set the terminal to 120x30 (column x row) for the program to work correctly!");
-        printf("\nPress any key to recheck after resizing or q to quit");
-        char isQuit = getch();
-        if (isQuit == 'q') 
-            return 0;
-    }
+    databaseOutput(lastIndexOfProduct, product_database, product_database_catalogue);
 
-    LOOP {
-        main_menu_display();
-        int choice_main_menu = getch() - '0';
-        switch (choice_main_menu) {
-            case 1:
-                product_menu(columns, rows);
-                break;
-            case 2:
-                customer_menu();
-                break;
-            case 3: {
-                printf("\n\n                                     Goodbye!\n\n");
-                sleep(1);
-                return 0;
-            }
-            default:
-                printf("\n\n                                     Invalid choice. Please try again.");
-                sleep(1);
-                break;
-        }
-    }
-}
-
-void main_menu_display() {
-    system("cls"); // Clear the terminal
-    printf("***************************************************************************************************************\n");
-    printf("*                                               Control menu                                                  *\n");
-    printf("***************************************************************************************************************\n");
-    printf("*                                                                                                             *\n");
-    printf("*                                         1. Product menu.                                                    *\n");
-    printf("*                                         2. Customer.                                                        *\n");
-    printf("*                                         3. Quit.                                                            *\n");
-    printf("*                                                                                                             *\n");
-    printf("***************************************************************************************************************\n");
-    printf("\n                                     Press a number to process         ");
+    return 0;
 }
