@@ -41,6 +41,7 @@ void product_menu(int columns, int rows)
                 getch();
                 break;
             }
+
             case 2: // Add an item
             { 
                 display_all_items();
@@ -63,6 +64,7 @@ void product_menu(int columns, int rows)
                 }
                 break;
             }
+
             case 3: // Sort items by fields
             { 
                 LOOP 
@@ -88,6 +90,7 @@ void product_menu(int columns, int rows)
                 }
                 break;
             }
+
             case 4: // Search by fields
             { 
                 LOOP 
@@ -115,6 +118,7 @@ void product_menu(int columns, int rows)
                 break;
 
             }
+
             case 5: // Print all the data to a text file
             { 
                 printf("\n");
@@ -135,6 +139,7 @@ void product_menu(int columns, int rows)
                 }
                 break;
             }
+
             case 6: // Delete the matched item
             { 
                 LOOP 
@@ -159,6 +164,7 @@ void product_menu(int columns, int rows)
                 }
                 break;
             }
+
             case 7: // Delete all data
             { 
                 display_all_items();
@@ -167,8 +173,10 @@ void product_menu(int columns, int rows)
                 getch();
                 break;
             }
+
             case 8: // Quit
                 break;
+
             case 9: // Modify an item
             { 
                 LOOP
@@ -242,6 +250,7 @@ void product_menu(int columns, int rows)
                 }
                 break;
             }
+            
             default: // Invalid option
             { 
                 printf("\n\n                                     Enter a valid option!");
@@ -249,6 +258,7 @@ void product_menu(int columns, int rows)
                 break;
             }
         }
+
         if (choice_product_menu == 8) // End program
         { 
             printf("\nReturning...");
