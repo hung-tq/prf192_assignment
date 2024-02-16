@@ -7,24 +7,8 @@
 #include "product_menu.c"
 #include "customer_menu.c"
 
+
 #define LOOP while(1)
-
-void hidecursor()
-{
-    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_CURSOR_INFO info;
-    info.dwSize = 100;
-    info.bVisible = FALSE;
-    SetConsoleCursorInfo(consoleHandle, &info);
-}
-
-void goToXY(int columns, int rows) 
-{
-    COORD cursorPos;
-    cursorPos.X = columns;
-    cursorPos.Y = rows;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cursorPos);
-}
 
 int main() {
     int columns, rows;
@@ -57,7 +41,7 @@ int main() {
         int choice_main_menu = getch() - '0';
         switch (choice_main_menu) {
             case 1:
-                product_menu();
+                product_menu(columns, rows);
                 break;
             case 2:
                 customer_menu();

@@ -1,7 +1,7 @@
 #ifndef HEADER_FILE
 #define HEADER_FILE
 
-void product_menu();            // Product menu
+void product_menu(int, int);            // Product menu
 
 void product_menu_display();    // Product menu display
 void display_catalogue();       // Display catalogues
@@ -17,8 +17,10 @@ void display_result_list();     // Display the result list
 void delete_all_data();         // Erase the database
 
 void display_search_menu();
-int modify_item(int, int, int, int, int, int);
+int  modify_item(int, int, int, int, int, int);
 void refresh_list(int);
+void printFooter(int, int);
+void display_option();
 
 // Return values:
 // 1:  Valid option
