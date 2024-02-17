@@ -102,7 +102,7 @@ int main() {
                 break;
             case 2: 
                 printf("\n\n                                     Goodbye!\n\n");
-                sleep(1);
+                sleep(2);
                 system("cls");
                 return 0;
             default:
@@ -638,7 +638,7 @@ void controlMenu() {
     printf("*                                               Control menu                                                  *\n");
     printf("***************************************************************************************************************\n");
     printf("*                                                                                                             *\n");
-    printf("*                                         1. Product.                                                    *\n");
+    printf("*                                         1. Product.                                                         *\n");
     printf("*                                         2. Customer.                                                        *\n");
     printf("*                                         3. Quit.                                                            *\n");
     printf("*                                                                                                             *\n");
