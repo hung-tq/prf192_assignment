@@ -8,6 +8,8 @@
 
 #include "main.h"
 
+// Macro declare
+
 #define MAXDB                           50
 #define LOOP                            while(1)
 #define LABEL                           (option ? "customer" : "product")
@@ -22,6 +24,8 @@
 #define DATABASE_FILE_OPEN              databaseFileOpen(option, isTerminal)
 #define DATABASE_DELETE_MATCH_ITEM      databaseDeleteMatchedItem(option, countOfDatabase(databaseMain[TYPE]), databaseSearchIndex, databaseMain[TYPE])
 #define DATABASE_DELETE_ALL             databaseDeleteAll(option, countOfDatabase(databaseMain[TYPE]), databaseMain[TYPE])
+
+// Database
 
 char databaseMain[2][MAXDB][MAXDB][MAXDB]          
 = 
@@ -59,8 +63,9 @@ char databaseCatalogue[2][5][20]
     {"name", "age", "phone number","acconut balance","bonus point"}, // Customer Database
 };
 
-int databaseSearchIndex[MAXDB];
+int databaseSearchIndex[MAXDB]; // Store the boolen of search result
 
+// Main program
 int main() {
     // int columns, rows;
     system("cls");
@@ -94,13 +99,12 @@ int main() {
             case 0:
             case 1:
                 mainMenu(-1, -1, choiceMainMenu, databaseMain);
-                getch();
                 break;
-            case 2: {
+            case 2: 
                 printf("\n\n                                     Goodbye!\n\n");
                 sleep(1);
+                system("cls");
                 return 0;
-            }
             default:
                 printf("\n\n                                     Invalid choice. Please try again.");
                 sleep(1);
@@ -111,6 +115,7 @@ int main() {
     return 0;
 }
 
+// Function Definitions
 
 int countOfDatabase(char databaseParameter[MAXDB][MAXDB][MAXDB]) 
 {
@@ -386,7 +391,7 @@ void databaseDeleteAll(int databaseType, int lastIndex, char databaseParameter[M
 }
 
 // Main Program
-void mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXDB][MAXDB]) 
+int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXDB][MAXDB]) 
 {
     LOOP 
     {
@@ -620,7 +625,7 @@ void mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAX
         { 
             printf("\nReturning...");
             sleep(1);
-            break;
+            return 1;
         }   
     }
 }
@@ -633,7 +638,7 @@ void controlMenu() {
     printf("*                                               Control menu                                                  *\n");
     printf("***************************************************************************************************************\n");
     printf("*                                                                                                             *\n");
-    printf("*                                         1. Product menu.                                                    *\n");
+    printf("*                                         1. Product.                                                    *\n");
     printf("*                                         2. Customer.                                                        *\n");
     printf("*                                         3. Quit.                                                            *\n");
     printf("*                                                                                                             *\n");
