@@ -95,7 +95,8 @@ int main() {
         controlMenu();
         int choiceMainMenu = getch() - '0' - 1;
 
-        switch (choiceMainMenu) {
+        switch (choiceMainMenu) 
+        {
             case 0:
             case 1:
                 mainMenu(-1, -1, choiceMainMenu, databaseMain);
