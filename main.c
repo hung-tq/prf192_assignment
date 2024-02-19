@@ -25,7 +25,7 @@
 #define DATABASE_DELETE_MATCH_ITEM      databaseDeleteMatchedItem(option, countOfDatabase(databaseMain[TYPE]), databaseSearchIndex, databaseMain[TYPE])
 #define DATABASE_DELETE_ALL             databaseDeleteAll(option, countOfDatabase(databaseMain[TYPE]), databaseMain[TYPE])
 
-// Database
+// Databases
 
 char databaseMain[2][MAXDB][MAXDB][MAXDB]          
 = 
