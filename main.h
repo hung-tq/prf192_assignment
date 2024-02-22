@@ -1,9 +1,9 @@
 #pragma once
 
-#ifndef FUNCTIONS_H
-#define FUNCTIONS_H
+#ifndef MAIN_H
+#define MAIN_H
 
-#define MAXDB                           50
+#define MAXDB 50
 
 extern char databaseCatalogue[2][5][20];
 extern char databaseMain[2][MAXDB][MAXDB][MAXDB];
@@ -29,6 +29,4 @@ int  databaseFoundItem          (int databaseSearchIndex[MAXDB]);
 int  databaseDeleteMatchedItem  (int databaseType, int lastIndex, int databaseSearchIndex[MAXDB], char databaseParameter[MAXDB][MAXDB][MAXDB]);
 void databaseDeleteAll          (int databaseType, int lastIndex, char databaseParameter[MAXDB][MAXDB][MAXDB]);
 
-
-
-#endif // FUNCTIONS_H
+#endif // MAIN_H
