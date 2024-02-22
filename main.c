@@ -8,22 +8,23 @@
 
 #include "main.h"
 
-// Macro declare
+// Macro declare for easy read
 
 #define MAXDB                           50
 #define LOOP                            while(1)
 #define LABEL                           (option ? "customer" : "product")
 #define TYPE                            (option ? 1 : 0)
-#define DATABASE_OUTPUT_DISPLAY         databaseOutputDisplay(option, countOfDatabase(databaseMain[TYPE]), databaseMain[TYPE], databaseCatalogue)
-#define DATABASE_INPUT                  databaseInput(option, index, countOfDatabase(databaseMain[TYPE]), databaseMain[TYPE], inputOption, databaseCatalogue)
-#define DATABASE_CATALOGUE_DISPLAY      databaseCatalogueDisplay(option, databaseCatalogue)
-#define DATABASE_SORT_BY_FIELD          databaseSortByField(option, sortChoice - 1, countOfDatabase(databaseMain[TYPE]), databaseMain[TYPE])
-#define DATABASE_SEARCH_BY_FIELD        databaseSearchByField(option, searchChoice, countOfDatabase(databaseMain[TYPE]), databaseSearchIndex, databaseMain[TYPE], databaseCatalogue)
-#define DATABASE_RESULT_LIST_DISPLAY    databaseResultListDisplay(option, countOfDatabase(databaseMain[TYPE]), databaseSearchIndex, databaseMain[TYPE], databaseCatalogue)
-#define DATABASE_EXPORT_TO_FILE         databaseExportToFile(option, countOfDatabase(databaseMain[TYPE]), databaseMain[TYPE], databaseCatalogue)
-#define DATABASE_FILE_OPEN              databaseFileOpen(option, isTerminal)
-#define DATABASE_DELETE_MATCH_ITEM      databaseDeleteMatchedItem(option, countOfDatabase(databaseMain[TYPE]), databaseSearchIndex, databaseMain[TYPE])
-#define DATABASE_DELETE_ALL             databaseDeleteAll(option, countOfDatabase(databaseMain[TYPE]), databaseMain[TYPE])
+#define LAST_INDEX                      countOfDatabase            (databaseMain[TYPE])
+#define DATABASE_OUTPUT_DISPLAY         databaseOutputDisplay      (option, LAST_INDEX, databaseMain[TYPE], databaseCatalogue)
+#define DATABASE_INPUT                  databaseInput              (option, index, LAST_INDEX, databaseMain[TYPE], inputOption, databaseCatalogue)
+#define DATABASE_CATALOGUE_DISPLAY      databaseCatalogueDisplay   (option, databaseCatalogue)
+#define DATABASE_SORT_BY_FIELD          databaseSortByField        (option, sortChoice - 1, LAST_INDEX, databaseMain[TYPE])
+#define DATABASE_SEARCH_BY_FIELD        databaseSearchByField      (option, searchChoice, LAST_INDEX, databaseSearchIndex, databaseMain[TYPE], databaseCatalogue)
+#define DATABASE_RESULT_LIST_DISPLAY    databaseResultListDisplay  (option, LAST_INDEX, databaseSearchIndex, databaseMain[TYPE], databaseCatalogue)
+#define DATABASE_EXPORT_TO_FILE         databaseExportToFile       (option, LAST_INDEX, databaseMain[TYPE], databaseCatalogue)
+#define DATABASE_FILE_OPEN              databaseFileOpen           (option, isTerminal)
+#define DATABASE_DELETE_MATCH_ITEM      databaseDeleteMatchedItem  (option, LAST_INDEX, databaseSearchIndex, databaseMain[TYPE])
+#define DATABASE_DELETE_ALL             databaseDeleteAll          (option, LAST_INDEX, databaseMain[TYPE])
 
 // Databases
 
@@ -31,36 +32,36 @@ char databaseMain[2][MAXDB][MAXDB][MAXDB]
 = 
 {
     {      // Product Database
-        {"chicken", "10", "30", "22/10/2023", "22/10/2024"},
-        {"beef", "15", "20", "15/11/2023", "15/11/2024"},
-        {"pork", "12", "25", "18/12/2023", "18/12/2024"},
-        {"fish", "8", "40", "05/09/2023", "05/09/2024"},
-        {"vegetables", "5", "50", "30/11/2023", "30/11/2024"},
-        {"fruits", "6", "60", "12/12/2023", "12/12/2024"},
-        {"bread", "3", "70", "01/01/2023", "01/01/2024"},
-        {"milk", "2", "80", "02/02/2023", "02/02/2024"},
-        {"cheese", "4", "90", "03/03/2023", "03/03/2024"},
-        {"eggs", "1", "100", "04/04/2023", "04/04/2024"}
+        {"chicken",    "10", "30",  "22/10/2023", "22/10/2024"},
+        {"beef",       "15", "20",  "15/11/2023", "15/11/2024"},
+        {"pork",       "12", "25",  "18/12/2023", "18/12/2024"},
+        {"fish",       "8",  "40",  "05/09/2023", "05/09/2024"},
+        {"vegetables", "5",  "50",  "30/11/2023", "30/11/2024"},
+        {"fruits",     "6",  "60",  "12/12/2023", "12/12/2024"},
+        {"bread",      "3",  "70",  "01/01/2023", "01/01/2024"},
+        {"milk",       "2",  "80",  "02/02/2023", "02/02/2024"},
+        {"cheese",     "4",  "90",  "03/03/2023", "03/03/2024"},
+        {"eggs",       "1",  "100", "04/04/2023", "04/04/2024"}
     },
     {      // Customer Database
-        {"John", "25", "1234567890", "1000", "50"},
-        {"Alice", "30", "9876543210", "2000", "100"},
-        {"Bob", "35", "5555555555", "1500", "75"},
-        {"Emma", "28", "9999999999", "1800", "90"},
+        {"John",    "25", "1234567890", "1000", "50"},
+        {"Alice",   "30", "9876543210", "2000", "100"},
+        {"Bob",     "35", "5555555555", "1500", "75"},
+        {"Emma",    "28", "9999999999", "1800", "90"},
         {"Michael", "40", "1111111111", "1200", "60"},
-        {"Sophia", "32", "4444444444", "2500", "125"},
-        {"William", "27", "6666666666", "900", "45"},
-        {"Olivia", "31", "2222222222", "1700", "85"},
-        {"James", "29", "8888888888", "1400", "70"},
-        {"Emily", "33", "3333333333", "2200", "110"}
+        {"Sophia",  "32", "4444444444", "2500", "125"},
+        {"William", "27", "6666666666", "900",  "45"},
+        {"Olivia",  "31", "2222222222", "1700", "85"},
+        {"James",   "29", "8888888888", "1400", "70"},
+        {"Emily",   "33", "3333333333", "2200", "110"}
     }
 };
 
 char databaseCatalogue[2][5][20] 
 =
 {
-    {"name", "stock", "price", "manufacturing date", "expiry date"}, // Product Database
-    {"name", "age", "phone number","acconut balance","bonus point"}, // Customer Database
+    {"name", "stock", "price",       "manufacturing date", "expiry date"}, // Product Database
+    {"name", "age",   "phone number","acconut balance",    "bonus point"}, // Customer Database
 };
 
 int databaseSearchIndex[MAXDB]; // Store the boolen of search result
@@ -68,7 +69,7 @@ int databaseSearchIndex[MAXDB]; // Store the boolen of search result
 // Main program
 int main() {
     // int columns, rows;
-    system("cls");
+    printf("\e[1;1H\e[2J");
     // hidecursor();
 
     // LOOP {
@@ -104,7 +105,7 @@ int main() {
             case 2: 
                 printf("\n\n                                     Goodbye!\n\n");
                 sleep(2);
-                system("cls");
+                printf("\e[1;1H\e[2J");
                 return 0;
             default:
                 printf("\n\n                                     Invalid choice. Please try again.");
@@ -164,7 +165,7 @@ int databaseInput(int databaseType, int index, int lastIndex, char databaseParam
 void databaseOutputDisplay(int databaseType, int lastIndex, char databaseParameter[MAXDB][MAXDB][MAXDB], char databaseCatalogueParameter[2][5][20]) 
 {
     int j = 1;
-    system("cls"); // Clear the terminal
+    printf("\e[1;1H\e[2J"); // Clear the terminal
     printf("********************************************************************************************************\n");
     printf("*                                       %-14s                                              *\n", databaseType ? "Customer Database" : "Product Database");
     printf("********************************************************************************************************\n");
@@ -284,7 +285,7 @@ int databaseSearchByField(int databaseType, int choiceSearch, int lastIndex, int
 void databaseResultListDisplay(int databaseType, int lastIndex, int databaseSearchIndex[MAXDB], char databaseParameter[MAXDB][MAXDB][MAXDB], char databaseCatalogue[2][5][20])
 {
     int j = 1;
-    system("cls"); // Clear the terminal
+    printf("\e[1;1H\e[2J"); // Clear the terminal
     printf("********************************************************************************************************\n");
     printf("*                                       %-14s                                              *\n", databaseType ? "Customer Search List" : "Product Search List");
     printf("********************************************************************************************************\n");
@@ -353,7 +354,7 @@ int databaseFileOpen(int databaseType, char isTerminal)
         printf("\n");
 
         char c;
-        system("cls");
+        printf("\e[1;1H\e[2J");
         while ((c = fgetc(items_txt)) != EOF) 
             printf("%c", c);
 
@@ -396,10 +397,10 @@ int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXD
 {
     LOOP 
     {
-        if (option == 1)
-            productMenuDisplay();
-        else
+        if (option)
             customerMenuDisplay();
+        else
+            productMenuDisplay(); 
 
         int mainMenuChoice = getch() - '0';
         
@@ -423,7 +424,7 @@ int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXD
 
                 int tempReturn = DATABASE_INPUT;
 
-                if (tempReturn == 1) 
+                if (tempReturn) 
                 {   
                     printf("\n                                            Add item successfully!\n");
                     printf("\n                     Press r to refresh the list, p to return to %s menu    ", LABEL);
@@ -456,7 +457,7 @@ int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXD
 
                     int tempReturn = DATABASE_SORT_BY_FIELD;    
                       
-                    if (tempReturn == 1) 
+                    if (tempReturn) 
                     {
                         printf("\n                          Sort by %s successfully!\n", databaseCatalogue[option][sortChoice - 1]);
                         printf("\n                          Press any keys to return to %s menu     ", LABEL);
@@ -487,7 +488,7 @@ int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXD
 
                     int tempReturn = DATABASE_SEARCH_BY_FIELD;
 
-                    if (tempReturn == 1) 
+                    if (tempReturn) 
                     {
                         DATABASE_RESULT_LIST_DISPLAY;
 
@@ -550,7 +551,7 @@ int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXD
                     int tempSearchReturn = DATABASE_SEARCH_BY_FIELD;
 
                     printf("\n");
-                    if (tempSearchReturn == 1) 
+                    if (tempSearchReturn) 
                     {
                         int foundItem = databaseFoundItem(databaseSearchIndex);
 
@@ -624,7 +625,7 @@ int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXD
 
         if (mainMenuChoice == 8) // End program
         { 
-            printf("\nReturning...");
+            printf("\n                                     Returning...");
             sleep(1);
             return 1;
         }   
@@ -634,7 +635,7 @@ int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXD
 // Banner
 
 void controlMenu() {
-    system("cls"); // Clear the terminal
+    printf("\e[1;1H\e[2J"); // Clear the terminal
     printf("***************************************************************************************************************\n");
     printf("*                                               Control menu                                                  *\n");
     printf("***************************************************************************************************************\n");
@@ -649,7 +650,7 @@ void controlMenu() {
 
 void productMenuDisplay() 
 {
-    system("cls"); // Clear the terminal
+    printf("\e[1;1H\e[2J"); // Clear the terminal
     printf("************************************************************************************************************************\n");
     printf("*                                               Product Menu                                                           *\n");
     printf("************************************************************************************************************************\n");
@@ -669,7 +670,7 @@ void productMenuDisplay()
 
 void customerMenuDisplay()
 {
-    system("cls"); // Clear the terminal
+    printf("\e[1;1H\e[2J"); // Clear the terminal
     printf("************************************************************************************************************************\n");
     printf("*                                               Customer Menu                                                          *\n");
     printf("************************************************************************************************************************\n");
