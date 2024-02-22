@@ -9,7 +9,7 @@ extern char databaseCatalogue[2][5][20];
 extern char databaseMain[2][MAXDB][MAXDB][MAXDB];
 extern int  databaseSearchIndex[MAXDB];
 
-int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXDB][MAXDB]); 
+int  mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXDB][MAXDB]); 
 
 void controlMenu();
 void productMenuDisplay();
