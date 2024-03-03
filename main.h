@@ -28,5 +28,7 @@ int  databaseFileOpen           (int databaseType, char isTerminal);
 int  databaseFoundItem          (int databaseSearchIndex[MAXDB]);
 int  databaseDeleteMatchedItem  (int databaseType, int lastIndex, int databaseSearchIndex[MAXDB], char databaseParameter[MAXDB][MAXDB][MAXDB]);
 void databaseDeleteAll          (int databaseType, int lastIndex, char databaseParameter[MAXDB][MAXDB][MAXDB]);
+int  findInvalidInput           (char inputString[5]);
+int  verifyDateStringInput_ddmmyyyy  (char dateString[10]);
 
 #endif // MAIN_H

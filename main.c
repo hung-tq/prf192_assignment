@@ -72,7 +72,8 @@ int main() {
     printf("\e[1;1H\e[2J");
     // hidecursor();
 
-    // LOOP {
+    // LOOP 
+    // {
     //     system("cls");
     //     CONSOLE_SCREEN_BUFFER_INFO csbi;
     //     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
@@ -92,7 +93,8 @@ int main() {
     //         return 0;
     // }
 
-    LOOP {
+    LOOP 
+    {
         controlMenu();
         int choiceMainMenu = getch() - '0' - 1;
 
@@ -103,12 +105,12 @@ int main() {
                 mainMenu(-1, -1, choiceMainMenu, databaseMain);
                 break;
             case 2: 
-                printf("\n\n                                     Goodbye!\n\n");
+                printf("\n\n                                        Goodbye!\n\n");
                 sleep(2);
                 printf("\e[1;1H\e[2J");
                 return 0;
             default:
-                printf("\n\n                                     Invalid choice. Please try again.");
+                printf("\n\n                                        Invalid choice. Please try again.");
                 sleep(1);
                 break;
         }
@@ -133,24 +135,43 @@ int databaseInput(int databaseType, int index, int lastIndex, char databaseParam
     char tempHolder[5][MAXDB] = {};
     printf("\n");
 
+    if (strcmp(option, "6") == 0) 
+        return 2; // Back a step
+
+    // Assign value to temp variable
     for (int i = 0; i < 5; i++) 
     {
         if (index == -1 && strcmp(option, "-1") == 0) 
         {
-            printf("                   Enter %s or q to quit:  ", databaseCatalogueParameter[databaseType][i]);
+            printf("                   Enter %s or q to back:  ", databaseCatalogueParameter[databaseType][i]);
             scanf("%s", tempHolder[i]);
             if (strcmp(tempHolder[i], "q") == 0)
                 return 0; // Quit
         }
         else if (0 < option[i] - 48 && option[i] - 48 < 6)
         {
-            printf("                   Enter %s or q to quit: ", databaseCatalogueParameter[databaseType][option[i] - 49]);
+            printf("                   Enter %s or q to back: ", databaseCatalogueParameter[databaseType][option[i] - 49]);
             scanf("%s", tempHolder[i]);
             if (strcmp(tempHolder[i], "q") == 0)
                 return 0; // Quit
         }
     }
 
+    // Check the input
+    for (int i = 0; i < 5; i++)
+        if ((0 < option[i] - 48 && option[i] - 48 < 6) || strcmp(option, "-1") == 0)
+        {
+            if (i == 1 && atoi(tempHolder[i]) < 0)
+                return -1; // Invalid
+            if (i == 2 && atoi(tempHolder[i]) < 0)
+                return -1; // Invalid
+            if (i == 3 && verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1)
+                return -1; // Invalid
+            if (i == 4 && verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1)
+                return -1; // Invalid
+        }
+
+    // Assaign temp value to database
     for (int i = 0; i < 5; i++)
     {
         if (index == -1 && strcmp(option, "-1") == 0)
@@ -166,27 +187,27 @@ void databaseOutputDisplay(int databaseType, int lastIndex, char databaseParamet
 {
     int j = 1;
     printf("\e[1;1H\e[2J"); // Clear the terminal
-    printf("********************************************************************************************************\n");
-    printf("*                                       %-14s                                              *\n", databaseType ? "Customer Database" : "Product Database");
-    printf("********************************************************************************************************\n");
-    printf("*                                                                                                      *\n");
-    printf("*   no. |   %-4s            |   %-5s   |   %-12s    |   %-18s   |   %-11s   *\n", databaseCatalogueParameter[databaseType][0], databaseCatalogueParameter[databaseType][1], databaseCatalogueParameter[databaseType][2], databaseCatalogueParameter[databaseType][3], databaseCatalogueParameter[databaseType][4]);
-    printf("*                                                                                                      *\n");
+    printf("************************************************************************************************************************\n");
+    printf("*                                                 %-14s                                                     *\n", databaseType ? "Customer Database" : "Product Database");
+    printf("************************************************************************************************************************\n");
+    printf("*                                                                                                                      *\n");
+    printf("*   no. |   %-4s            |   %-5s   |   %-12s    |   %-18s   |   %-11s                   *\n", databaseCatalogueParameter[databaseType][0], databaseCatalogueParameter[databaseType][1], databaseCatalogueParameter[databaseType][2], databaseCatalogueParameter[databaseType][3], databaseCatalogueParameter[databaseType][4]);
+    printf("*                                                                                                                      *\n");
     for (int i = 0; i <= lastIndex; i++) 
         if (strcmp(databaseParameter[i][0], "\0") != 0) 
         {
-            printf("*   %-3d |   %-14s  |   %-5s   |   %-12s    |   %-18s   |   %-11s   *\n", j, databaseParameter[i][0], databaseParameter[i][1], databaseParameter[i][2], databaseParameter[i][3], databaseParameter[i][4]);
+            printf("*   %-3d |   %-14s  |   %-5s   |   %-12s    |   %-18s   |   %-11s                   *\n", j, databaseParameter[i][0], databaseParameter[i][1], databaseParameter[i][2], databaseParameter[i][3], databaseParameter[i][4]);
             j++;
         }
-    printf("*                                                                                                      *\n");
-    printf("********************************************************************************************************\n\n");
+    printf("*                                                                                                                      *\n");
+    printf("************************************************************************************************************************\n\n");
 }
 
 void databaseCatalogueDisplay(int databaseType, char databaseCatalogueParameter[2][5][20])
 {
     for (int i = 0; i < 5; i++)
-        printf("                   %d. %s\n", i + 1, databaseCatalogueParameter[databaseType][i]);
-    printf("                   6. Back\n");
+        printf("                             %d. %s\n", i + 1, databaseCatalogueParameter[databaseType][i]);
+    printf("                             6. back\n");
 }
 
 void databaseRowSwap(int firstIndex, int secondIndex, char databaseParameter[MAXDB][MAXDB][MAXDB])
@@ -217,9 +238,9 @@ int databaseSortByField(int databaseType, int choiceSort, int lastIndex, char da
                 }
                 else if (databaseParameter[i][choiceSort][2] == '/') // Sort date string dd/mm/yyyy
                 {
-                    char tempFirstYear[5]; char tempSecondYear[5];
-                    char tempFirstMonth[3]; char tempSecondMonth[3];
-                    char tempFirstDay[3]; char tempSecondDay[3];
+                    char tempFirstYear[5],  tempSecondYear[5];
+                    char tempFirstMonth[3], tempSecondMonth[3];
+                    char tempFirstDay[3],   tempSecondDay[3];
 
                     // Get substring
                     memcpy(tempFirstYear, &databaseParameter[i][choiceSort][6], 4);
@@ -286,20 +307,20 @@ void databaseResultListDisplay(int databaseType, int lastIndex, int databaseSear
 {
     int j = 1;
     printf("\e[1;1H\e[2J"); // Clear the terminal
-    printf("********************************************************************************************************\n");
-    printf("*                                       %-14s                                              *\n", databaseType ? "Customer Search List" : "Product Search List");
-    printf("********************************************************************************************************\n");
-    printf("*                                                                                                      *\n");
-    printf("*   no. |   %-4s            |   %-5s   |   %-12s    |   %-18s   |   %-11s   *\n", databaseCatalogue[databaseType][0], databaseCatalogue[databaseType][1], databaseCatalogue[databaseType][2], databaseCatalogue[databaseType][3], databaseCatalogue[databaseType][4]);
-    printf("*                                                                                                      *\n");
+    printf("************************************************************************************************************************\n");
+    printf("*                                               %-14s                                                    *\n", databaseType ? "Customer Search List" : "Product Search List");
+    printf("************************************************************************************************************************\n");
+    printf("*                                                                                                                      *\n");
+    printf("*   no. |   %-4s            |   %-5s   |   %-12s    |   %-18s   |   %-11s                   *\n", databaseCatalogue[databaseType][0], databaseCatalogue[databaseType][1], databaseCatalogue[databaseType][2], databaseCatalogue[databaseType][3], databaseCatalogue[databaseType][4]);
+    printf("*                                                                                                                      *\n");
     for (int i = 0; i <= lastIndex; i++)
         if (databaseSearchIndex[i] == 1)
         {
-            printf("*   %-3d |   %-14s  |   %-5s   |   %-12s    |   %-18s   |   %-11s   *\n", j, databaseParameter[i][0], databaseParameter[i][1], databaseParameter[i][2], databaseParameter[i][3], databaseParameter[i][4]);
+            printf("*   %-3d |   %-14s  |   %-5s   |   %-12s    |   %-18s   |   %-11s                   *\n", j, databaseParameter[i][0], databaseParameter[i][1], databaseParameter[i][2], databaseParameter[i][3], databaseParameter[i][4]);
             j++;
         }
-    printf("*                                                                                                      *\n");
-    printf("********************************************************************************************************\n\n");
+    printf("*                                                                                                                      *\n");
+    printf("************************************************************************************************************************\n\n");
 }
 
 int databaseExportToFile(int databaseType, int lastIndex, char databaseParameter[MAXDB][MAXDB][MAXDB], char databaseCatalogue[2][5][20])
@@ -392,6 +413,46 @@ void databaseDeleteAll(int databaseType, int lastIndex, char databaseParameter[M
             strcpy(databaseParameter[i][j], "\0");
 }
 
+int findInvalidInput(char inputString[5])
+{
+    for (int i = 0; i < 5; i++)
+        if (inputString[i]== '0' || inputString[i] == '7' || inputString[i] == '8' || inputString[i] == '9')
+            return 1;
+}
+
+int verifyDateStringInput_ddmmyyyy(char dateString[10])
+{
+    if (strlen(dateString) != 10)
+        return -1; // Invalid
+
+    if (dateString[2] != '/' || dateString[5] != '/')
+        return -1; // Invalid
+
+    for (int i = 0; i < 10; i++)
+        if (i != 2 && i != 5)
+            if (dateString[i] < '0' || dateString[i] > '9')
+                return -1; // Invalid
+
+    char tempDay[3], tempMonth[3], tempYear[5];
+    memcpy(tempDay, &dateString[0], 2);
+    tempDay[2] = '\0';
+    memcpy(tempMonth, &dateString[3], 2);
+    tempMonth[2] = '\0';
+    memcpy(tempYear, &dateString[6], 4);
+    tempYear[4] = '\0';
+
+    if (atoi(tempDay) < 1 || atoi(tempDay) > 31)
+        return -1; // Invalid
+
+    if (atoi(tempMonth) < 1 || atoi(tempMonth) > 12)
+        return -1; // Invalid
+
+    if (atoi(tempYear) < 1000 || atoi(tempYear) > 9999)
+        return -1; // Invalid
+
+    return 1;
+}
+
 // Main Program
 int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXDB][MAXDB]) 
 {
@@ -410,36 +471,51 @@ int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXD
             { 
                 DATABASE_OUTPUT_DISPLAY;
 
-                printf("\n                               Press p to return to main %s menu     ", LABEL);
+                printf("\n                             Press any keys to return to main %s menu     ", LABEL);
                 getch();
                 break;
             }
 
             case 2: // Add an item
-            { 
-                char inputOption[] = "-1";
-                int index = -1;
+            {
+                LOOP
+                {
+                    char inputOption[] = "-1";
+                    int index = -1;
 
-                DATABASE_OUTPUT_DISPLAY;
+                    DATABASE_OUTPUT_DISPLAY;
 
-                int tempReturn = DATABASE_INPUT;
+                    int tempReturn = DATABASE_INPUT;
 
-                if (tempReturn) 
-                {   
-                    printf("\n                                            Add item successfully!\n");
-                    printf("\n                     Press r to refresh the list, p to return to %s menu    ", LABEL);
-                    char endChoice = getch();
-                    if (endChoice == 'R' || endChoice == 'r') 
-                    {
-                        DATABASE_OUTPUT_DISPLAY;
+                    if (tempReturn == 1) 
+                    {   
+                        printf("\n                                              Add item successfully!\n");
+                        printf("\n                           Press r to refresh the list, any keys to return to %s menu    ", LABEL);
+                        char endChoice = getch();
+                        if (endChoice == 'R' || endChoice == 'r') 
+                        {
+                            DATABASE_OUTPUT_DISPLAY;
 
-                        printf("\n                                   Press p to return to %s menu     ", LABEL);
-                        getch();
+                            printf("\n                               Press any keys to return to %s menu     ", LABEL);
+                            getch();
+                            printf("\n                                            Returning to %s menu...", LABEL);
+                            sleep(1);
+                            break;
+                        }
+                        else 
+                        {
+                            printf("\n\n                                          Returning to %s menu...", LABEL);
+                            sleep(1);
+                            break;
+                        }
                     }
-                    else 
+                    else if (tempReturn == -1)
                     {
-                        printf("\n\n                                            Returning to %s menu...", LABEL);
-                        sleep(1);
+                        printf("\n                                     Please check the input!");
+                        printf("\n                          Do you want to retry? (yes/no) (press y or n)");
+                        char retryChoice = getch();
+                        if (retryChoice == 'n')
+                            break;
                     }
                 }
                 break;
@@ -502,7 +578,8 @@ int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXD
                     {
                         printf("\n                                     Enter a valid option!");
                         sleep(1);
-                    } else if (tempReturn == 2) {}
+                    } 
+                    else if (tempReturn == 2) {}
                     else
                         break;
                 }
@@ -607,13 +684,89 @@ int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXD
                 break;
             }
 
-            case 8: // Quit
-                break;
-
-            case 9: // Modify an item
+            case 8: // Modify an item
             { 
+                LOOP
+                {
+                    int isQuit = 0;
+
+                    DATABASE_OUTPUT_DISPLAY;
+
+                    printf("\n                    Enter the index of the item you want to modify or 0 to back to %s menu: ", LABEL);
+                    int modifyIndex;
+                    scanf("%d", &modifyIndex);
+
+                    if (modifyIndex == 0)
+                        break;
+
+                    if (modifyIndex < 1 || modifyIndex > LAST_INDEX + 1)
+                    {
+                        printf("\n                                     Enter a valid option!");
+                        sleep(1);
+                        continue;
+                    }
+
+                    memset(databaseSearchIndex, 0, MAXDB);
+                    databaseSearchIndex[modifyIndex - 1] = 1;
+
+                    LOOP
+                    {
+                        DATABASE_RESULT_LIST_DISPLAY;
+                        DATABASE_CATALOGUE_DISPLAY;
+
+                        printf("\n                   Which field do you want to modify (Enter the string of number or 6 to back)     ");
+                        char inputOption[5];
+                        int index = modifyIndex - 1;
+                        scanf("%s", inputOption);
+
+                        if (findInvalidInput(inputOption) == 1)
+                        {
+                            printf("\n                                            Enter a valid option!");
+                            sleep(1);
+                            continue;
+                        }
+
+                        int tempDBInputRetutn = DATABASE_INPUT;
+                        if (tempDBInputRetutn == 1) 
+                        {
+                            printf("\n                                            Modify item successfully!\n");
+                            printf("\n                            Press r to refresh the list, p to return to %s menu    ", LABEL);
+                            char endChoice = getch();
+                            if (endChoice == 'R' || endChoice == 'r') 
+                            {
+                                DATABASE_OUTPUT_DISPLAY;
+
+                                printf("\n                            Press any keys to continue edit others, p to return to %s menu     ", LABEL);
+                                char continueModify = getch();
+                                if (continueModify == 'p')
+                                {
+                                    printf("\n\n                                            Returning to %s menu...", LABEL);
+                                    isQuit = 1;
+                                    sleep(1);
+                                    break;
+                                }
+                                else 
+                                    break;
+                            }
+                            else 
+                            {
+                                isQuit = 1;
+                                printf("\n\n                                            Returning to %s menu...", LABEL);
+                                sleep(1);
+                                break;
+                            }
+                        }
+                        else if (tempDBInputRetutn == 2)
+                            break;
+                    }
+                    if (isQuit == 1)
+                        break;
+                }
                 break;
             }
+            
+            case 9: // Quit
+                break;
 
             default: // Invalid option
             { 
@@ -623,9 +776,9 @@ int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXD
             }
         }
 
-        if (mainMenuChoice == 8) // End program
+        if (mainMenuChoice == 9) // End program
         { 
-            printf("\n                                     Returning...");
+            printf("\n                                       Returning...");
             sleep(1);
             return 1;
         }   
@@ -636,54 +789,56 @@ int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXD
 
 void controlMenu() {
     printf("\e[1;1H\e[2J"); // Clear the terminal
-    printf("***************************************************************************************************************\n");
-    printf("*                                               Control menu                                                  *\n");
-    printf("***************************************************************************************************************\n");
-    printf("*                                                                                                             *\n");
-    printf("*                                         1. Product.                                                         *\n");
-    printf("*                                         2. Customer.                                                        *\n");
-    printf("*                                         3. Quit.                                                            *\n");
-    printf("*                                                                                                             *\n");
-    printf("***************************************************************************************************************\n");
-    printf("\n                                     Press a number to process         ");
+    printf("************************************************************************************************************************\n");
+    printf("*                                                 Control menu                                                         *\n");
+    printf("************************************************************************************************************************\n");
+    printf("*                                                                                                                      *\n");
+    printf("*                                               1. Product.                                                            *\n");
+    printf("*                                               2. Customer.                                                           *\n");
+    printf("*                                               3. Quit.                                                               *\n");
+    printf("*                                                                                                                      *\n");
+    printf("************************************************************************************************************************\n");
+    printf("\n                                        Press a number to process         ");
 }
 
 void productMenuDisplay() 
 {
     printf("\e[1;1H\e[2J"); // Clear the terminal
     printf("************************************************************************************************************************\n");
-    printf("*                                               Product Menu                                                           *\n");
+    printf("*                                                  Product Menu                                                        *\n");
     printf("************************************************************************************************************************\n");
     printf("*                                                                                                                      *\n");
-    printf("*                                         1. Display all items.                                                        *\n");
-    printf("*                                         2. Add an item.                                                              *\n");
-    printf("*                                         3. Sort all items.                                                           *\n");
-    printf("*                                         4. Look for an item.                                                         *\n");
-    printf("*                                         5. Export data to a text file.                                               *\n");
-    printf("*                                         6. Delete matched item.                                                      *\n");
-    printf("*                                         7. Delete all items.                                                         *\n");
-    printf("*                                         8. Back.                                                                     *\n");
+    printf("*                                             1. Display all items.                                                    *\n");
+    printf("*                                             2. Add an item.                                                          *\n");
+    printf("*                                             3. Sort all items.                                                       *\n");
+    printf("*                                             4. Look for an item.                                                     *\n");
+    printf("*                                             5. Export data to a text file.                                           *\n");
+    printf("*                                             6. Delete matched item.                                                  *\n");
+    printf("*                                             7. Delete all items.                                                     *\n");
+    printf("*                                             8. Modify an item.                                                       *\n");
+    printf("*                                             9. Back.                                                                 *\n");
     printf("*                                                                                                                      *\n");
     printf("************************************************************************************************************************\n");
-    printf("\n\n                                     Press a option to process         ");
+    printf("\n\n                                       Press a option to process         ");
 }
 
 void customerMenuDisplay()
 {
     printf("\e[1;1H\e[2J"); // Clear the terminal
     printf("************************************************************************************************************************\n");
-    printf("*                                               Customer Menu                                                          *\n");
+    printf("*                                                  Customer Menu                                                       *\n");
     printf("************************************************************************************************************************\n");
     printf("*                                                                                                                      *\n");
-    printf("*                                         1. Display all customers.                                                    *\n");
-    printf("*                                         2. Add a customer.                                                           *\n");
-    printf("*                                         3. Sort all customers.                                                       *\n");
-    printf("*                                         4. Look for a customer.                                                      *\n");
-    printf("*                                         5. Export data to a text file.                                               *\n");
-    printf("*                                         6. Delete matched customer.                                                  *\n");
-    printf("*                                         7. Delete all customers.                                                     *\n");
-    printf("*                                         8. Back.                                                                     *\n");
+    printf("*                                            1. Display all customers.                                                 *\n");
+    printf("*                                            2. Add a customer.                                                        *\n");
+    printf("*                                            3. Sort all customers.                                                    *\n");
+    printf("*                                            4. Look for a customer.                                                   *\n");
+    printf("*                                            5. Export data to a text file.                                            *\n");
+    printf("*                                            6. Delete matched customer.                                               *\n");
+    printf("*                                            7. Delete all customers.                                                  *\n");
+    printf("*                                            8. Modify an item                                                         *\n");
+    printf("*                                            9. Back                                                                   *\n");
     printf("*                                                                                                                      *\n");
     printf("************************************************************************************************************************\n");
-    printf("\n\n                                     Press a option to process         ");
+    printf("\n\n                                       Press a option to process         ");
 }

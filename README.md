@@ -2,7 +2,6 @@
 
 Test branch
 
-
 ## Deployment
 
 - If you use IDE like Dev-C++ or Visual Studio, then just clone, build and run the main.exe file.
