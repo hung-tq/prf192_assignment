@@ -1,6 +1,6 @@
 # PRF192 ASSIGNMENT
 
-This is our assignment for building a program to control the database in a mini market.
+customer branch
 
 
 ## Deployment
