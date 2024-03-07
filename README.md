@@ -1,6 +1,7 @@
 # PRF192 ASSIGNMENT
 
-Test branch
+This is our assignment for building a program to control the database in a mini market.
+
 
 ## Deployment
 
@@ -14,4 +15,3 @@ Test branch
   gcc main.c -o main
   ./main
 ```
-
