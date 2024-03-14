@@ -70,7 +70,7 @@ int databaseSearchIndex[MAXDB]; // Store the boolen of search result
 
 int main() {
     // int columns, rows;
-    printf("\e[1;1H\e[2J");
+    system("cls");
     // hidecursor();
 
     // LOOP 
