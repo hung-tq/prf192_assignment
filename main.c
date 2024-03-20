@@ -27,7 +27,7 @@
 
 // Databases
 
-char databaseMain[2][MAXDB][MAXDB][MAXDB]          
+char databaseMain[2][MAXDB][5][MAXDB]          
 = 
 {
     {      // Product Database
@@ -109,7 +109,7 @@ int main() {
 
 // Function Definitions
 
-int countOfDatabase(char databaseParameter[MAXDB][MAXDB][MAXDB]) 
+int countOfDatabase(char databaseParameter[MAXDB][5][MAXDB]) 
 {
     // Get last index from the bottom of the table
     for (int i = MAXDB - 1; i > -1; i--) 
@@ -138,7 +138,7 @@ int isDigitString(char *input)
     return 1;
 }
 
-int databaseInput(int databaseType, int index, int lastIndex, char databaseParameter[MAXDB][MAXDB][MAXDB], char option[5], char databaseCatalogueParameter[2][5][20]) 
+int databaseInput(int databaseType, int index, int lastIndex, char databaseParameter[MAXDB][5][MAXDB], char option[5], char databaseCatalogueParameter[2][5][20]) 
 {
     // Clear the buffer
     setbuf(stdin, NULL);
@@ -193,31 +193,38 @@ int databaseInput(int databaseType, int index, int lastIndex, char databaseParam
     // Check the input
     for (int i = 0; i < 5; i++)
     {
+        // String length must smaller than 23 characters
+        if (strlen(tempHolder[i]) > 23 == 1)
+        {
+            return -1;
+        }
+
+        // Check valid input
         if ((0 < option[i] - 48 && option[i] - 48 < 6) || strcmp(option, "-1") == 0)
         {
             // Check if the input string is digits larger than 0 or not
-            if (i == 1 && (atoi(tempHolder[i]) < 0 || isDigitString(tempHolder[i]) == 0))
+            if (option[i] - 49 == 1 && (atoi(tempHolder[i]) < 0 || isDigitString(tempHolder[i]) == 0))
             {
                 // printf("1");
                 return -1; // Invalid
             }
 
             // Check if the input string is digits larger than 0 or not
-            if (i == 2 && (atoi(tempHolder[i]) < 0 || isDigitString(tempHolder[i]) == 0))
+            if (option[i] - 49 == 2 && (atoi(tempHolder[i]) < 0 || isDigitString(tempHolder[i]) == 0))
             {
                 // printf("2");
                 return -1; // Invalid
             }
 
             // Check if the input string is digits larger than 0 or not, or is a true date string
-            if (i == 3 && ((verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1 && databaseType == 0) || (atoi(tempHolder[i]) < 0 && databaseType == 1)))
+            if (option[i] - 49 == 3 && ((verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1 && databaseType == 0) || (atoi(tempHolder[i]) < 0 && databaseType == 1)))
             {
                 // printf("3");
                 return -1; // Invalid
             }
 
             // Check if the input string is digits larger than 0 or not, or is a true date string
-            if (i == 4 && ((verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1 && databaseType == 0) || (atoi(tempHolder[i]) < 0 && databaseType == 1)))
+            if (option[i] - 49 == 4 && ((verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1 && databaseType == 0) || (atoi(tempHolder[i]) < 0 && databaseType == 1)))
             {
                 // printf("4");
                 return -1; // Invalid
@@ -228,8 +235,11 @@ int databaseInput(int databaseType, int index, int lastIndex, char databaseParam
     // Assaign temp value to database
     for (int i = 0; i < 5; i++)
     {
+        // If there is no inputOption or inputOption == "-1"
         if (index == -1 && strcmp(option, "-1") == 0)
             strcpy(databaseParameter[lastIndex + 1][i], tempHolder[i]);
+
+        // There is inputOption
         else if (0 < option[i] - 48 && option[i] - 48 < 6)
             strcpy(databaseParameter[index][option[i] - 49], tempHolder[i]);
     }
@@ -238,7 +248,7 @@ int databaseInput(int databaseType, int index, int lastIndex, char databaseParam
     return 1;     
 }
 
-void databaseOutputDisplay(int databaseType, int lastIndex, int isDisplayResult, int databaseSearchIndex[MAXDB], char databaseParameter[MAXDB][MAXDB][MAXDB], char databaseCatalogueParameter[2][5][20]) 
+void databaseOutputDisplay(int databaseType, int lastIndex, int isDisplayResult, int databaseSearchIndex[MAXDB], char databaseParameter[MAXDB][5][MAXDB], char databaseCatalogueParameter[2][5][20]) 
 {
     int j = 1;
 
@@ -285,7 +295,7 @@ void databaseCatalogueDisplay(int databaseType, char databaseCatalogueParameter[
     printf("                                6. back\n"); 
 }
 
-void databaseRowSwap(int firstIndex, int secondIndex, char databaseParameter[MAXDB][MAXDB][MAXDB])
+void databaseRowSwap(int firstIndex, int secondIndex, char databaseParameter[MAXDB][5][MAXDB])
 {
     // Swap two adjacent rows in a table
     char tempHolder[5][MAXDB] = {};
@@ -297,7 +307,7 @@ void databaseRowSwap(int firstIndex, int secondIndex, char databaseParameter[MAX
     }
 }
 
-int databaseSortByField(int databaseType, int choiceSort, int lastIndex, char databaseParameter[MAXDB][MAXDB][MAXDB])
+int databaseSortByField(int databaseType, int choiceSort, int lastIndex, char databaseParameter[MAXDB][5][MAXDB])
 {
     // Invalid
     if (0 > choiceSort || choiceSort > 5)
@@ -361,7 +371,7 @@ int databaseSortByField(int databaseType, int choiceSort, int lastIndex, char da
     return 1; 
 }
 
-int databaseSearchByField(int databaseType, int choiceSearch, int lastIndex, int databaseSearchIndex[MAXDB], char databaseParameter[MAXDB][MAXDB][MAXDB], char databaseCatalogue[2][5][20])
+int databaseSearchByField(int databaseType, int choiceSearch, int lastIndex, int databaseSearchIndex[MAXDB], char databaseParameter[MAXDB][5][MAXDB], char databaseCatalogue[2][5][20])
 {
     int count = 0;
     char searchParameter[MAXDB];
@@ -427,7 +437,7 @@ int databaseSearchByField(int databaseType, int choiceSearch, int lastIndex, int
 //     printf("************************************************************************************************************************\n\n");
 // }
 
-int databaseExportToFile(int databaseType, int lastIndex, char databaseParameter[MAXDB][MAXDB][MAXDB], char databaseCatalogueParameter[2][5][20])
+int databaseExportToFile(int databaseType, int lastIndex, char databaseParameter[MAXDB][5][MAXDB], char databaseCatalogueParameter[2][5][20])
 {
     FILE *items_txt;
     int j = 1;
@@ -514,7 +524,7 @@ int databaseFoundItem(int databaseSearchIndex[MAXDB])
     return count;
 }
 
-int databaseDeleteMatchedItem(int databaseType, int lastIndex, int databaseSearchIndex[MAXDB], char databaseParameter[MAXDB][MAXDB][MAXDB])
+int databaseDeleteMatchedItem(int databaseType, int lastIndex, int databaseSearchIndex[MAXDB], char databaseParameter[MAXDB][5][MAXDB])
 {
     // Delete the matched item
     for (int i = 0; i <= lastIndex; i++)
@@ -526,7 +536,7 @@ int databaseDeleteMatchedItem(int databaseType, int lastIndex, int databaseSearc
     return 1; 
 }
 
-void databaseDeleteAll(int databaseType, int lastIndex, char databaseParameter[MAXDB][MAXDB][MAXDB])
+void databaseDeleteAll(int databaseType, int lastIndex, char databaseParameter[MAXDB][5][MAXDB])
 {
     // Delete all
     for (int i = 0; i <= lastIndex; i++)
@@ -586,10 +596,13 @@ int verifyDateStringInput_ddmmyyyy(char dateString[10])
 }
 
 // Main Program
-int mainMenu(int option, char databaseMain[2][MAXDB][MAXDB][MAXDB]) 
+int mainMenu(int option, char databaseMain[2][MAXDB][5][MAXDB]) 
 {
     LOOP 
     {
+        // Clear the buffer
+        setbuf(stdin, NULL);
+
         if (option == 1)
             customerMenuDisplay();
         else
@@ -616,6 +629,9 @@ int mainMenu(int option, char databaseMain[2][MAXDB][MAXDB][MAXDB])
             {
                 LOOP
                 {
+                    // Clear the buffer
+                    setbuf(stdin, NULL);
+                    
                     int isDisplayResult = 0; 
                     char inputOption[] = "-1";
                     int index = -1;
@@ -668,6 +684,9 @@ int mainMenu(int option, char databaseMain[2][MAXDB][MAXDB][MAXDB])
             { 
                 LOOP 
                 {
+                    // Clear the buffer
+                    setbuf(stdin, NULL);
+
                     int isDisplayResult = 0;
 
                     DATABASE_OUTPUT_DISPLAY;
@@ -703,6 +722,9 @@ int mainMenu(int option, char databaseMain[2][MAXDB][MAXDB][MAXDB])
             { 
                 LOOP 
                 {
+                    // Clear the buffer
+                    setbuf(stdin, NULL);
+
                     int isDisplayResult = 0;
 
                     DATABASE_OUTPUT_DISPLAY;
@@ -762,7 +784,10 @@ int mainMenu(int option, char databaseMain[2][MAXDB][MAXDB][MAXDB])
 
             // Print all the data to a text file
             case 5: 
-            { 
+            {
+                // Clear the buffer
+                setbuf(stdin, NULL);
+
                 printf("\n");
 
                 DATABASE_EXPORT_TO_FILE;
@@ -798,6 +823,9 @@ int mainMenu(int option, char databaseMain[2][MAXDB][MAXDB][MAXDB])
             { 
                 LOOP 
                 {
+                    // Clear the buffer
+                    setbuf(stdin, NULL);
+
                     int isDisplayResult = 0;
                     DATABASE_OUTPUT_DISPLAY;
                     DATABASE_CATALOGUE_DISPLAY;
@@ -861,6 +889,9 @@ int mainMenu(int option, char databaseMain[2][MAXDB][MAXDB][MAXDB])
             // Delete all data
             case 7:
             { 
+                // Clear the buffer
+                setbuf(stdin, NULL);
+
                 int isDisplayResult = 0;
                 DATABASE_OUTPUT_DISPLAY;
 
@@ -889,6 +920,9 @@ int mainMenu(int option, char databaseMain[2][MAXDB][MAXDB][MAXDB])
             { 
                 LOOP
                 {
+                    // Clear the buffer
+                    setbuf(stdin, NULL);
+
                     int isQuit = 0;
                     int isDisplayResult = 0;
 
@@ -983,7 +1017,7 @@ int mainMenu(int option, char databaseMain[2][MAXDB][MAXDB][MAXDB])
                         // Back
                         else if (tempDBInputRetutn == 2)
                         {
-                            isQuit = 1;
+                            // isQuit = 1;
                             break;
                         }
                     }
