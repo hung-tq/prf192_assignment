@@ -181,7 +181,7 @@ int databaseInput(int databaseType, int index, int lastIndex, char databaseParam
         }
 
         // For modify an item function
-        else if (0 < option[i] - 48 && option[i] - 48 < 6)
+        else if (0 <= option[i] - 49 && option[i] - 49 < 5)
         {
             printf("                      Enter %s or q to back:  ", databaseCatalogueParameter[databaseType][option[i] - 49]);
 
@@ -205,28 +205,28 @@ int databaseInput(int databaseType, int index, int lastIndex, char databaseParam
         }
 
         // Check valid input
-        if ((0 < option[i] - 48 && option[i] - 48 < 6) || strcmp(option, "-1") == 0)
+        if ((0 <= option[i] - 49 && option[i] - 49 < 5) || strcmp(option, "-1") == 0)
         {
             // Check if the input string is digits larger than 0 or not
-            if (option[i] - 49 == 1 && (atoi(tempHolder[i]) < 0 || isDigitString(tempHolder[i]) == 0))
+            if (option[i] - 49 == 1 && (atoi(tempHolder[i]) < 0 || isDigitString(tempHolder[i]) == 0) || strcmp(option, "-1") == 0)
             {
                 return -1; // Invalid
             }
 
             // Check if the input string is digits larger than 0 or not
-            if (option[i] - 49 == 2 && (atoi(tempHolder[i]) < 0 || isDigitString(tempHolder[i]) == 0))
+            if (option[i] - 49 == 2 && (atoi(tempHolder[i]) < 0 || isDigitString(tempHolder[i]) == 0) || strcmp(option, "-1") == 0)
             {
                 return -1; // Invalid
             }
 
             // Check if the input string is digits larger than 0 or not, or is a true date string
-            if (option[i] - 49 == 3 && ((verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1 && databaseType == 0 && strlen(tempHolder[i]) == 10) || (atoi(tempHolder[i]) < 0 && databaseType == 1)))
+            if (option[i] - 49 == 3 && ((verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1 && databaseType == 0 && strlen(tempHolder[i]) == 10) || (atoi(tempHolder[i]) < 0 && databaseType == 1)) || strcmp(option, "-1") == 0)
             {
                 return -1; // Invalid
             }
 
             // Check if the input string is digits larger than 0 or not, or is a true date string
-            if (option[i] - 49 == 4 && ((verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1 && databaseType == 0 && strlen(tempHolder[i]) == 10) || (atoi(tempHolder[i]) < 0 && databaseType == 1)))
+            if (option[i] - 49 == 4 && ((verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1 && databaseType == 0 && strlen(tempHolder[i]) == 10) || (atoi(tempHolder[i]) < 0 && databaseType == 1)) || strcmp(option, "-1") == 0)
             {
                 return -1; // Invalid
             }
@@ -240,8 +240,8 @@ int databaseInput(int databaseType, int index, int lastIndex, char databaseParam
         if (index == -1 && strcmp(option, "-1") == 0)
             strcpy(databaseParameter[lastIndex + 1][i], tempHolder[i]);
 
-        // There is inputOption
-        else if (0 < option[i] - 48 && option[i] - 48 < 6)
+        // There is inputOption and index
+        else if (0 <= option[i] - 49 && option[i] - 49 < 5)
             strcpy(databaseParameter[index][option[i] - 49], tempHolder[i]);
     }
 
