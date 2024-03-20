@@ -8,7 +8,7 @@
 
 #include "main.h"
 
-// Macro declare for easy read
+// Macro declare for easy read - 14
 
 #define MAXDB                           50
 #define LOOP                            while(1)
@@ -20,7 +20,6 @@
 #define DATABASE_CATALOGUE_DISPLAY      databaseCatalogueDisplay   (option, databaseCatalogue)
 #define DATABASE_SORT_BY_FIELD          databaseSortByField        (option, sortChoice - 1, LAST_INDEX, databaseMain[TYPE])
 #define DATABASE_SEARCH_BY_FIELD        databaseSearchByField      (option, searchChoice, LAST_INDEX, databaseSearchIndex, databaseMain[TYPE], databaseCatalogue)
-//#define DATABASE_RESULT_LIST_DISPLAY    databaseResultListDisplay  (option, LAST_INDEX, databaseSearchIndex, databaseMain[TYPE], databaseCatalogue)
 #define DATABASE_EXPORT_TO_FILE         databaseExportToFile       (option, LAST_INDEX, databaseMain[TYPE], databaseCatalogue)
 #define DATABASE_FILE_OPEN              databaseFileOpen           (option, isTerminal)
 #define DATABASE_DELETE_MATCH_ITEM      databaseDeleteMatchedItem  (option, LAST_INDEX, databaseSearchIndex, databaseMain[TYPE])
@@ -69,35 +68,12 @@ int databaseSearchIndex[MAXDB]; // Store the boolen of search result
 // Main program
 
 int main() {
-    // int columns, rows;
-    printf("\e[1;1H\e[2J");
-    // hidecursor();
-
-    // LOOP 
-    // {
-    //     system("cls");
-    //     CONSOLE_SCREEN_BUFFER_INFO csbi;
-    //     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-    //     columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-    //     rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
-
-    //     printf("Columns: %d\n", columns);
-    //     printf("Rows: %d\n", rows);
-
-    //     if (columns == 120 && rows == 30) 
-    //         break;
-
-    //     printf("Please set the terminal to 120x30 (column x row) for the program to work correctly!");
-    //     printf("\nPress any key to recheck after resizing or q to quit");
-    //     char isQuit = getch();
-    //     if (isQuit == 'q') 
-    //         return 0;
-    // }
-
     LOOP 
     {
         controlMenu();
+
         int choiceMainMenu = getch() - '0' - 1;
+        // int choiceMainMenu = 0;
 
         switch (choiceMainMenu) 
         {
@@ -105,7 +81,7 @@ int main() {
             case 0:
             case 1:
             {
-                mainMenu(-1, -1, choiceMainMenu, databaseMain);
+                mainMenu(choiceMainMenu, databaseMain);
                 break;
             }
 
@@ -530,7 +506,6 @@ int databaseFileOpen(int databaseType, char isTerminal)
 
 int databaseFoundItem(int databaseSearchIndex[MAXDB])
 {
-    // Get the last index from the bottom of the database
     int count = 0;
     for (int i = 0; i < MAXDB; i++)
         if (databaseSearchIndex[i] == 1)
@@ -538,7 +513,6 @@ int databaseFoundItem(int databaseSearchIndex[MAXDB])
 
     return count;
 }
-
 
 int databaseDeleteMatchedItem(int databaseType, int lastIndex, int databaseSearchIndex[MAXDB], char databaseParameter[MAXDB][MAXDB][MAXDB])
 {
@@ -566,6 +540,8 @@ int findInvalidInput(char inputString[5])
     for (int i = 0; i < 5; i++)
         if (inputString[i]== '0' || inputString[i] == '7' || inputString[i] == '8' || inputString[i] == '9')
             return 1;
+
+    return 0;
 }
 
 int verifyDateStringInput_ddmmyyyy(char dateString[10])
@@ -610,7 +586,7 @@ int verifyDateStringInput_ddmmyyyy(char dateString[10])
 }
 
 // Main Program
-int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXDB][MAXDB]) 
+int mainMenu(int option, char databaseMain[2][MAXDB][MAXDB][MAXDB]) 
 {
     LOOP 
     {
@@ -695,10 +671,13 @@ int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXD
                     int isDisplayResult = 0;
 
                     DATABASE_OUTPUT_DISPLAY;
+
                     DATABASE_CATALOGUE_DISPLAY;
 
                     printf("\n                                Which field do you want to sort (Press a listed number)");
-                    int sortChoice = getch() - '0';   
+
+                    int sortChoice = getch() - '0'; 
+
                     int tempReturn = DATABASE_SORT_BY_FIELD;    
                       
                     if (tempReturn == 1) 
@@ -727,6 +706,7 @@ int mainMenu(int columns, int rows, int option, char databaseMain[2][MAXDB][MAXD
                     int isDisplayResult = 0;
 
                     DATABASE_OUTPUT_DISPLAY;
+                    
                     DATABASE_CATALOGUE_DISPLAY;
 
                     printf("\n                                Which field do you want to search (Press a listed number)");
