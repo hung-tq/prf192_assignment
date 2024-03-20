@@ -6,10 +6,10 @@
 #include <unistd.h>
 #include <conio.h>
 
+// Include main prototypes
 #include "main.h"
 
 // Macro declare for easy read - 14
-
 #define MAXDB                           50
 #define LOOP                            while(1)
 #define LABEL                           (option ? "customer" : "product")
@@ -25,12 +25,15 @@
 #define DATABASE_DELETE_MATCH_ITEM      databaseDeleteMatchedItem  (option, LAST_INDEX, databaseSearchIndex, databaseMain[TYPE])
 #define DATABASE_DELETE_ALL             databaseDeleteAll          (option, LAST_INDEX, databaseMain[TYPE])
 
-// Databases
+// Main program
+int main() {
 
-char databaseMain[2][MAXDB][5][MAXDB]          
-= 
-{
-    {      // Product Database
+    // Main database: tables - records - properties - 50 characters length of string
+    char databaseMain[2][MAXDB][5][MAXDB]          
+    = 
+    {
+    // Product Database
+    {      
         {"chicken",    "10", "30",  "22/10/2023", "22/10/2024"},
         {"beef",       "15", "20",  "15/11/2023", "15/11/2024"},
         {"pork",       "12", "25",  "18/12/2023", "18/12/2024"},
@@ -42,7 +45,9 @@ char databaseMain[2][MAXDB][5][MAXDB]
         {"cheese",     "4",  "90",  "03/03/2023", "03/03/2024"},
         {"eggs",       "1",  "100", "04/04/2023", "04/04/2024"}
     },
-    {      // Customer Database
+
+    // Customer Database
+    {      
         {"John",    "25", "1234567890", "1000", "50"},
         {"Alice",   "30", "9876543210", "2000", "100"},
         {"Bob",     "35", "5555555555", "1500", "75"},
@@ -54,20 +59,25 @@ char databaseMain[2][MAXDB][5][MAXDB]
         {"James",   "29", "8888888888", "1400", "70"},
         {"Emily",   "33", "3333333333", "2200", "110"}
     }
-};
+    };
 
-char databaseCatalogue[2][5][20] 
-=
-{
-    {"name", "stock", "price",       "manufacturing date", "expiry date"}, // Product Database
-    {"name", "age",   "phone number","acconut balance",    "bonus point"}, // Customer Database
-};
+    // Catalogue Databases: tables - propertie names - 20 characters length of string
+    char databaseCatalogue[2][5][20] 
+    =
+    {
+    // Product Database Catalogue
+    {"name", "stock", "price",       "manufacturing date", "expiry date"},
 
-int databaseSearchIndex[MAXDB]; // Store the boolen of search result
+    // Customer Database Catalogue
+    {"name", "age",   "phone number","acconut balance",    "bonus point"}, 
+    };
 
-// Main program
+    // Store the boolen of search result - parrallel with the databaseMain
+    int databaseSearchIndex[MAXDB]; 
 
-int main() {
+    system("cls");
+
+    // Main Loop
     LOOP 
     {
         controlMenu();
@@ -81,14 +91,14 @@ int main() {
             case 0:
             case 1:
             {
-                mainMenu(choiceMainMenu, databaseMain);
+                mainMenu(choiceMainMenu, databaseMain, databaseCatalogue, databaseSearchIndex);
                 break;
             }
 
             // Quiting
             case 2:
             { 
-                printf("\n\n                                           Goodbye!\n\n");
+                printf("\n\n                                                  Goodbye!");
                 sleep(2);
                 system("cls");
                 return 0;
@@ -108,7 +118,6 @@ int main() {
 }
 
 // Function Definitions
-
 int countOfDatabase(char databaseParameter[MAXDB][5][MAXDB]) 
 {
     // Get last index from the bottom of the table
@@ -138,7 +147,7 @@ int isDigitString(char *input)
     return 1;
 }
 
-int databaseInput(int databaseType, int index, int lastIndex, char databaseParameter[MAXDB][5][MAXDB], char option[5], char databaseCatalogueParameter[2][5][20]) 
+int databaseInput(int databaseType, int index, int lastIndex, char databaseParameter[MAXDB][5][MAXDB], char option[6], char databaseCatalogueParameter[2][5][20]) 
 {
     // Clear the buffer
     setbuf(stdin, NULL);
@@ -148,7 +157,11 @@ int databaseInput(int databaseType, int index, int lastIndex, char databaseParam
 
     // Back a step
     if (strcmp(option, "6") == 0) 
-        return 2; 
+        return 2;
+
+    // Check if the inputOption contains any digit 6
+    if (strstr(option, "6") != NULL) 
+        return 2;
 
     // Assign value to temp variable
     for (int i = 0; i < 5; i++) 
@@ -157,10 +170,6 @@ int databaseInput(int databaseType, int index, int lastIndex, char databaseParam
         if (index == -1 && strcmp(option, "-1") == 0) 
         {
             printf("                      Enter %s or q to back:  ", databaseCatalogueParameter[databaseType][i]);
-            
-            // // Clear the buffer
-            // int c;
-            // while ((c = getchar()) != '\n' && c != EOF);
 
             // Get the input string and trim all white space
             fgets(tempHolder[i], MAXDB, stdin);
@@ -175,10 +184,6 @@ int databaseInput(int databaseType, int index, int lastIndex, char databaseParam
         else if (0 < option[i] - 48 && option[i] - 48 < 6)
         {
             printf("                      Enter %s or q to back:  ", databaseCatalogueParameter[databaseType][option[i] - 49]);
-            
-            // // Clear the buffer
-            // int c;
-            // while ((c = getchar()) != '\n' && c != EOF);
 
             // Get the input string and trim all white space
             fgets(tempHolder[i], MAXDB, stdin);
@@ -205,28 +210,24 @@ int databaseInput(int databaseType, int index, int lastIndex, char databaseParam
             // Check if the input string is digits larger than 0 or not
             if (option[i] - 49 == 1 && (atoi(tempHolder[i]) < 0 || isDigitString(tempHolder[i]) == 0))
             {
-                // printf("1");
                 return -1; // Invalid
             }
 
             // Check if the input string is digits larger than 0 or not
             if (option[i] - 49 == 2 && (atoi(tempHolder[i]) < 0 || isDigitString(tempHolder[i]) == 0))
             {
-                // printf("2");
                 return -1; // Invalid
             }
 
             // Check if the input string is digits larger than 0 or not, or is a true date string
             if (option[i] - 49 == 3 && ((verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1 && databaseType == 0) || (atoi(tempHolder[i]) < 0 && databaseType == 1)))
             {
-                // printf("3");
                 return -1; // Invalid
             }
 
             // Check if the input string is digits larger than 0 or not, or is a true date string
             if (option[i] - 49 == 4 && ((verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1 && databaseType == 0) || (atoi(tempHolder[i]) < 0 && databaseType == 1)))
             {
-                // printf("4");
                 return -1; // Invalid
             }
         }
@@ -417,26 +418,6 @@ int databaseSearchByField(int databaseType, int choiceSearch, int lastIndex, int
     return 1; 
 }
 
-// void databaseResultListDisplay(int databaseType, int lastIndex, int databaseSearchIndex[MAXDB], char databaseParameter[MAXDB][MAXDB][MAXDB], char databaseCatalogue[2][5][20])
-// {
-//     int j = 1;
-//     printf("\e[1;1H\e[2J"); // Clear the terminal
-//     printf("************************************************************************************************************************\n");
-//     printf("*                                               %-14s                                                    *\n", databaseType ? "Customer Search List" : "Product Search List");
-//     printf("************************************************************************************************************************\n");
-//     printf("*                                                                                                                      *\n");
-//     printf("*   no. |   %-4s            |   %-5s   |   %-12s    |   %-18s   |   %-11s                   *\n", databaseCatalogue[databaseType][0], databaseCatalogue[databaseType][1], databaseCatalogue[databaseType][2], databaseCatalogue[databaseType][3], databaseCatalogue[databaseType][4]);
-//     printf("*                                                                                                                      *\n");
-//     for (int i = 0; i <= lastIndex; i++)
-//         if (databaseSearchIndex[i] == 1)
-//         {
-//             printf("*   %-3d |   %-14s  |   %-5s   |   %-12s    |   %-18s   |   %-11s                   *\n", j, databaseParameter[i][0], databaseParameter[i][1], databaseParameter[i][2], databaseParameter[i][3], databaseParameter[i][4]);
-//             j++;
-//         }
-//     printf("*                                                                                                                      *\n");
-//     printf("************************************************************************************************************************\n\n");
-// }
-
 int databaseExportToFile(int databaseType, int lastIndex, char databaseParameter[MAXDB][5][MAXDB], char databaseCatalogueParameter[2][5][20])
 {
     FILE *items_txt;
@@ -450,7 +431,6 @@ int databaseExportToFile(int databaseType, int lastIndex, char databaseParameter
     // Invalid, file not found
     if (items_txt == NULL) 
     {
-        // printf("File does not exist!");
         return -1; 
     }
     fprintf(items_txt,"************************************************************************************************************************\n");
@@ -544,13 +524,20 @@ void databaseDeleteAll(int databaseType, int lastIndex, char databaseParameter[M
             strcpy(databaseParameter[i][j], "\0");
 }
 
-int findInvalidInput(char inputString[5])
+int findInvalidInput(char inputString[6])
 {
     // Check if the choice option between 1 and 6, if not return 1
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < strlen(inputString); i++)
         if (inputString[i]== '0' || inputString[i] == '7' || inputString[i] == '8' || inputString[i] == '9')
             return 1;
 
+    // Check the duplicate digits
+    for (int i = 0; i < strlen(inputString); i++)
+        for (int j = i + 1; j < 5; j++)
+            if (inputString[i] == inputString[j])
+                return 1;
+
+    // Valid input
     return 0;
 }
 
@@ -596,7 +583,7 @@ int verifyDateStringInput_ddmmyyyy(char dateString[10])
 }
 
 // Main Program
-int mainMenu(int option, char databaseMain[2][MAXDB][5][MAXDB]) 
+int mainMenu(int option, char databaseMain[2][MAXDB][5][MAXDB], char databaseCatalogue[2][5][20], int databaseSearchIndex[MAXDB]) 
 {
     LOOP 
     {
@@ -631,7 +618,7 @@ int mainMenu(int option, char databaseMain[2][MAXDB][5][MAXDB])
                 {
                     // Clear the buffer
                     setbuf(stdin, NULL);
-                    
+
                     int isDisplayResult = 0; 
                     char inputOption[] = "-1";
                     int index = -1;
@@ -908,8 +895,10 @@ int mainMenu(int option, char databaseMain[2][MAXDB][5][MAXDB])
 
                 // Reject 
                 else 
+                {
                     printf("\n\n                                  No items deleted!");
-                
+                }
+
                 printf("\n\n                                  Press p to return to %s menu", LABEL);
                 getch();
                 break;
@@ -952,12 +941,15 @@ int mainMenu(int option, char databaseMain[2][MAXDB][5][MAXDB])
 
                     LOOP
                     {
+                        // Clear the buffer
+                        setbuf(stdin, NULL);
+
                         isDisplayResult = 1;
                         DATABASE_OUTPUT_DISPLAY;
                         DATABASE_CATALOGUE_DISPLAY;
 
                         printf("\n                      Which field do you want to modify (Enter the string of number or 6 to back)   ");
-                        char inputOption[5];
+                        char inputOption[6];
                         int index = modifyIndex - 1;
                         scanf("%s", inputOption);
 
