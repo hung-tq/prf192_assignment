@@ -1,15 +1,8 @@
 #pragma once
 
-#ifndef MAIN_H
-#define MAIN_H
-
 #define MAXDB 50
 
-extern char databaseCatalogue[2][5][20];
-extern char databaseMain[2][MAXDB][MAXDB][MAXDB];
-extern int  databaseSearchIndex[MAXDB];
-
-int  mainMenu                        (int columns, int rows, int option, char databaseMain[2][MAXDB][MAXDB][MAXDB]); 
+int  mainMenu                        (int option, char databaseMain[2][MAXDB][MAXDB][MAXDB]); 
 
 void controlMenu();
 void productMenuDisplay();
@@ -33,4 +26,4 @@ int  verifyDateStringInput_ddmmyyyy  (char dateString[10]);
 void trimWhiteSpace                  (char *str);
 int  isDigitString                   (char *input);
 
-#endif // MAIN_H
+// MAIN_H
