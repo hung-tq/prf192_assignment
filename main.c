@@ -28,7 +28,7 @@
 // Main program
 int main() {
 
-    // Main database: tables - records - properties - 50 characters length of string
+    // Main database: 2 tables - MAXDB records - 5 properties - MAXDB characters length of string
     char databaseMain[2][MAXDB][5][MAXDB]          
     = 
     {
@@ -61,7 +61,7 @@ int main() {
     }
     };
 
-    // Catalogue Databases: tables - propertie names - 20 characters length of string
+    // Catalogue Databases: 2 tables - 5 propertie names - 20 characters length of string
     char databaseCatalogue[2][5][20] 
     =
     {
@@ -220,13 +220,13 @@ int databaseInput(int databaseType, int index, int lastIndex, char databaseParam
             }
 
             // Check if the input string is digits larger than 0 or not, or is a true date string
-            if (option[i] - 49 == 3 && ((verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1 && databaseType == 0) || (atoi(tempHolder[i]) < 0 && databaseType == 1)))
+            if (option[i] - 49 == 3 && ((verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1 && databaseType == 0) || (atoi(tempHolder[i]) < 0 && databaseType == 1)) && strlen(tempHolder[i]) == 10)
             {
                 return -1; // Invalid
             }
 
             // Check if the input string is digits larger than 0 or not, or is a true date string
-            if (option[i] - 49 == 4 && ((verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1 && databaseType == 0) || (atoi(tempHolder[i]) < 0 && databaseType == 1)))
+            if (option[i] - 49 == 4 && ((verifyDateStringInput_ddmmyyyy(tempHolder[i]) == -1 && databaseType == 0) || (atoi(tempHolder[i]) < 0 && databaseType == 1)) && strlen(tempHolder[i]) == 10)
             {
                 return -1; // Invalid
             }
