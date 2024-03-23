@@ -98,6 +98,7 @@ int main() {
     {
         controlMenu();
         int choiceMainMenu = getch() - '0' - 1;
+        // int choiceMainMenu = 0;
 
         switch (choiceMainMenu) 
         {
@@ -566,6 +567,8 @@ int findInvalidInput(char inputString[5])
     for (int i = 0; i < 5; i++)
         if (inputString[i]== '0' || inputString[i] == '7' || inputString[i] == '8' || inputString[i] == '9')
             return 1;
+
+    return 0;
 }
 
 int verifyDateStringInput_ddmmyyyy(char dateString[10])
